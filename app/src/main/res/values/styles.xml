@@ -1,0 +1,34 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">#FFFFFF</item>
+        <item name="material_drawer_primary_text">#FFFFFF</item>
+        <item name="material_drawer_secondary_text">#8E9192</item>
+        <item name="material_drawer_hint_text">#FF00FF</item>
+        <item name="material_drawer_divider">#F7F7F7</item>
+        <item name="material_drawer_selected">#FFFFFF</item>
+        <item name="material_drawer_selected_text">#8E9192</item>
+        <item name="material_drawer_header_selection_text">#FFFFFF</item>
+
+        <!-- color -->
+        <!--<item name="imageSelectButtonColor">#86898c</item>
+        <item name="material_drawer_point_bar_color">#2790d2</item>-->
+
+        <!-- CAB :D -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

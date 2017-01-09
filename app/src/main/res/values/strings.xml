@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">한마음</string>
+
+    <!-- Navigation Drawer -->
+    <string name="shuttle">셔틀버스</string>
+    <string name="intercity">시외버스</string>
+    <string name="kobus">터미널버스</string>
+    <string name="load_search">길찾기</string>
+    <string name="with_taxi">택시동승</string>
+    <string name="subway">지하철</string>
+    <string name="search_log">검색기록</string>
+</resources>
