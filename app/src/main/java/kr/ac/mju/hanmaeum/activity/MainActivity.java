@@ -40,7 +40,5 @@ public class MainActivity extends BaseActivity {
         noticeListAdapter.addItem("02", "제목있음", "18-02-02");
         noticeListAdapter.addItem("03", "제목였음", "19-03-02");
     }
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
+
 }
