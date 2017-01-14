@@ -9,4 +9,9 @@
     <string name="with_taxi">택시동승</string>
     <string name="subway">지하철</string>
     <string name="search_log">검색기록</string>
+
+    <string name="navigation_text">대중교통 정보 서비스</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
