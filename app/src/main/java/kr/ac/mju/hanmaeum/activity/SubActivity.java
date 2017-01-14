@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.fragment.InterCityFragment;
+import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
 public class SubActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,7 +41,9 @@ public class SubActivity extends AppCompatActivity implements View.OnClickListen
 
         if (index == Constants.SHUTTLE_BUS) {
             title.setText(getString(R.string.shuttle));
-            // Fragment 호출
+            Fragment fragment = ShuttleFragment.newInstance();
+            fragment.setArguments(savedInstanceState);
+            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container , fragment).addToBackStack(null).commit();
         } else if (index == Constants.INTERCITY_BUS) {
             title.setText(getString(R.string.intercity));
             Fragment fragment = InterCityFragment.newInstance();

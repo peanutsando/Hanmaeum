@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/md_white_1000"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context="kr.ac.mju.hanmaeum.activity.SubActivity"
+                tools:showIn="@layout/activity_sub">
+
+    <FrameLayout
+        android:background="#EDEDED"
+        android:id="@+id/sub_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+</RelativeLayout>

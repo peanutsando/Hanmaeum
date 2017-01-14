@@ -50,9 +50,5 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/sub_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
+    <include layout="@layout/content_sub"/>
 </android.support.design.widget.CoordinatorLayout>

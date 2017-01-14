@@ -11,6 +11,9 @@
     <string name="search_log">검색기록</string>
 
     <string name="navigation_text">대중교통 정보 서비스</string>
+    <string name="search_hint">검색어를 입력해주세요.</string>
+    <string name="search">검색</string>
+    <string name="loading">검색중입니다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

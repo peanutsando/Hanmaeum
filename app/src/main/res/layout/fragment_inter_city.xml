@@ -4,10 +4,37 @@
              android:layout_height="match_parent"
              tools:context="kr.ac.mju.hanmaeum.fragment.InterCityFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="7dp"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <EditText
+                android:id="@+id/search_text"
+                android:layout_margin="6dp"
+                android:layout_weight="8"
+                android:hint="@string/search_hint"
+                android:singleLine="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/search"
+                android:src="@drawable/search"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </FrameLayout>
