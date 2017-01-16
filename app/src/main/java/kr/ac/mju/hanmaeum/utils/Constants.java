@@ -22,4 +22,15 @@ public class Constants {
 
     // Fragment Key
     public static final String FRAGMENT_KEY = "fragment_key";
+
+
+    /* URL */
+    public static final String NOTICE_URL = "http://jw4.mju.ac.kr/user/boardList.action?boardId=28510945&page=1";
+
+    /* JSOUP PARSING TAG */
+    public static final String TITLE_ELEMENT = "td[class=title]";
+    public static final String NUMBER_ELEMENT = "td[class=no]";
+    public static final String TIMESTAMP_ELEMENT = "td:eq(3)";
+    public static final String CHECK_URL_ELEMENT = "td > a[href]";
+    public static final String HREF_ELEMENT = "abs:href";
 }

@@ -1,3 +1,4 @@
+
 package kr.ac.mju.hanmaeum.activity.Notice;
 
 import android.content.Context;
@@ -37,7 +38,7 @@ public class NoticeListAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.activity_notice_item, viewGroup, false);
         }
 
-        // 화면에 표시될 View(layout이 inflate 된)으로부터 위젯에 대한 참조 획득
+        // 화면에 표시될 View(layout이 inflate 된)으로부터 위젯에 대한 참조 획득..
         TextView numberTextView = (TextView) view.findViewById(R.id.item_number);
         TextView titleTextView = (TextView) view.findViewById(R.id.item_noticeTitle);
         TextView timestampTextView = (TextView) view.findViewById(R.id.item_timestamp);
@@ -53,6 +54,9 @@ public class NoticeListAdapter extends BaseAdapter {
         return view;
     }
 
+    public ArrayList<NoticeItem> getNoticeItemList() {
+        return noticeItemList;
+    }
     // 지정한 위치에 있는 데이터와 관계된 아이템의 Index를 리턴
     @Override
     public long getItemId(int position) {
