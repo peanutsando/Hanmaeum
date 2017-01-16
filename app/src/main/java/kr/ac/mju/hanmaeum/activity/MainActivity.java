@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,12 +55,12 @@ public class MainActivity extends BaseActivity {
     }
 
     class GetNoticeTask extends AsyncTask<Void, Void, List<NoticeItem>> {
-
-
         @Override
         protected List<NoticeItem> doInBackground(Void... voids) {
             try {
                 Document doc = Jsoup.connect(Constants.NOTICE_URL).get();
+
+                Log.d("Test", "@@@@@@@@@@@@@@@@@@@@");
 
                 number = new ArrayList<String>();
                 title = new ArrayList<String>();
@@ -97,6 +98,9 @@ public class MainActivity extends BaseActivity {
 
                 for(int i=index; i < number.size(); i++) {
                     noticeListAdapter.addItem(number.get(i), title.get(i), timestamp.get(i));
+  /*                  Log.d("TEST", number.get(i));
+                    Log.d("TEST", title.get(i));
+                    Log.d("TEST", timestamp.get(i));*/
                 }
 
             } catch (IOException e) {
@@ -105,7 +109,6 @@ public class MainActivity extends BaseActivity {
             return null;
         }
 
-        // 리스트뷰 갱신.
         @Override
         protected void onPostExecute(List<NoticeItem> noticeItems) {
             super.onPostExecute(noticeItems);
