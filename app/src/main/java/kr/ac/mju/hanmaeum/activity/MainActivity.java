@@ -6,8 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,7 +33,6 @@ import kr.ac.mju.hanmaeum.utils.Constants;
 public class MainActivity extends BaseActivity {
     private ListView noticeListview;
     private NoticeListAdapter noticeListAdapter = null;
-    private ArrayList<NoticeItem> itemList = new ArrayList<>();
 
     // Values for notice
     private GetNoticeTask getNoticeTask;
@@ -41,48 +45,59 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // get a layout
+        this.setNavigationDrawer(savedInstanceState); // get navigation
 
-        this.setNavigationDrawer(savedInstanceState);
-
+        // get listView layout for notices and set Adapter to listView
         noticeListview = (ListView) findViewById(R.id.noticeListview);
-
         noticeListAdapter = new NoticeListAdapter();
         noticeListview.setAdapter(noticeListAdapter);
 
+        // execute works of background to get notices from homepage
         getNoticeTask = new GetNoticeTask();
         getNoticeTask.execute();
+
+        // add onItemClickListener using anonymous class
+        noticeListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), title.get(position), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    // Change UI (add notices to ListView) using AsyncTask
     class GetNoticeTask extends AsyncTask<Void, Void, List<NoticeItem>> {
         @Override
         protected List<NoticeItem> doInBackground(Void... voids) {
             try {
+                // connect url
                 Document doc = Jsoup.connect(Constants.NOTICE_URL).get();
-
-                Log.d("Test", "@@@@@@@@@@@@@@@@@@@@");
 
                 number = new ArrayList<String>();
                 title = new ArrayList<String>();
                 timestamp = new ArrayList<String>();
                 urlList = new ArrayList<String>();
 
+                // parse doc type element
                 Elements titleElement = doc.select(Constants.TITLE_ELEMENT);
                 for (Element e : titleElement) {
                     title.add(String.valueOf(e.text()));
                 }
 
+                // parse doc type element
                 Elements numberElement = doc.select(Constants.NUMBER_ELEMENT);
                 for (Element e : numberElement) {
                     number.add(String.valueOf(e.text()));
                 }
 
+                // parse doc type element
                 Elements timestampElement = doc.select(Constants.TIMESTAMP_ELEMENT);
-
                 for (Element e : timestampElement) {
                     timestamp.add(String.valueOf(e.text()));
                 }
 
+                // parse doc type element
                 Elements urlElement = doc.select(Constants.CHECK_URL_ELEMENT);
                 for (Element e : urlElement) {
                     if (!e.text().equals("")) {
@@ -90,17 +105,23 @@ public class MainActivity extends BaseActivity {
                     }
                 }
 
+                // How many do we delete notices? (they don't have a number)
                 for (int i=0; i < number.size(); i++) {
-                    if(!number.get(i).equals("")) {
+                    if(!number.get(i).matches("^[0-9]+$")) {
                         index++;
                     }
                 }
 
-                for(int i=index; i < number.size(); i++) {
+                // remove them. So We can get notices with number
+                for(int i=0; i<index; i++) {
+                    title.remove(i);
+                    number.remove(i);
+                    timestamp.remove(i);
+                    urlList.remove(i);
+                }
+
+                for(int i=0; i < number.size(); i++) {
                     noticeListAdapter.addItem(number.get(i), title.get(i), timestamp.get(i));
-  /*                  Log.d("TEST", number.get(i));
-                    Log.d("TEST", title.get(i));
-                    Log.d("TEST", timestamp.get(i));*/
                 }
 
             } catch (IOException e) {
