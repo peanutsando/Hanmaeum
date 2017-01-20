@@ -1,4 +1,4 @@
-package kr.ac.mju.hanmaeum.activity.Notice;
+package kr.ac.mju.hanmaeum.activity.notice;
 
 /**
  * Created by user on 2017-01-14.

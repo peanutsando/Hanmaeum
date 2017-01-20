@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="kr.ac.mju.hanmaeum.activity.Notice.NoticeContent"
+    tools:context="kr.ac.mju.hanmaeum.activity.notice.NoticeContent"
     tools:showIn="@layout/activity_notice_content">
 
     <TextView

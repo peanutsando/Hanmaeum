@@ -15,13 +15,13 @@ import kr.ac.mju.hanmaeum.fragment.InterCityFragment;
 import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
-public class SubActivity extends AppCompatActivity implements View.OnClickListener {
+public class SubActivity extends AppCompatActivity {
 
-    /*@BindView(R.id.toolbar_home)
+    @BindView(R.id.toolbar_home)
     ImageView home_btn;
 
     @BindView(R.id.toolbar_back)
-    ImageView back_btn;*/
+    ImageView back_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +29,8 @@ public class SubActivity extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_sub);
 
         TextView title = (TextView) findViewById(R.id.toolbar_title);
-        ImageView home_btn = (ImageView) findViewById(R.id.toolbar_home);
-        ImageView back_btn = (ImageView) findViewById(R.id.toolbar_back);
+        /*ImageView home_btn = (ImageView) findViewById(R.id.toolbar_home);
+        ImageView back_btn = (ImageView) findViewById(R.id.toolbar_back);*/
 
         ButterKnife.bind(this);
 
@@ -43,12 +43,12 @@ public class SubActivity extends AppCompatActivity implements View.OnClickListen
             title.setText(getString(R.string.shuttle));
             Fragment fragment = ShuttleFragment.newInstance();
             fragment.setArguments(savedInstanceState);
-            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container , fragment).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.INTERCITY_BUS) {
             title.setText(getString(R.string.intercity));
             Fragment fragment = InterCityFragment.newInstance();
             fragment.setArguments(savedInstanceState);
-            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container , fragment).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.KOBUS) {
             title.setText(getString(R.string.kobus));
 
@@ -65,20 +65,9 @@ public class SubActivity extends AppCompatActivity implements View.OnClickListen
             title.setText(getString(R.string.search_log));
 
         }
-
-        back_btn.setOnClickListener(this);
-        home_btn.setOnClickListener(this);
     }
 
-    @Override public void onClick(View view) {
-        if (view.getId() == R.id.toolbar_back) {
-            onBackPressed();
-        } else if (view.getId() == R.id.toolbar_home) {
-            finish();
-        }
-    }
-
-    /*@OnClick(R.id.toolbar_home)
+    @OnClick(R.id.toolbar_home)
     public void setHome_btn() {
         finish();
     }
@@ -86,7 +75,7 @@ public class SubActivity extends AppCompatActivity implements View.OnClickListen
     @OnClick(R.id.toolbar_back)
     public void setBack_btn() {
         onBackPressed();
-    }*/
+    }
 
     @Override public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {

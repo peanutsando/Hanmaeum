@@ -26,6 +26,7 @@ public class Constants {
 
     /* URL */
     public static final String NOTICE_URL = "http://jw4.mju.ac.kr/user/boardList.action?boardId=28510945&page=1";
+    public static final String SHUTTLE_URL = "http://www.mju.ac.kr/mbs/mjukr/campusmap/HT5/CampusMap_yi_02_sub03.jsp";
 
     /* JSOUP PARSING TAG */
     public static final String TITLE_ELEMENT = "td[class=title]";
@@ -33,4 +34,6 @@ public class Constants {
     public static final String TIMESTAMP_ELEMENT = "td:eq(3)";
     public static final String CHECK_URL_ELEMENT = "td > a[href]";
     public static final String HREF_ELEMENT = "abs:href";
+
+    public static final String SHUTTLE_TABLE_ELEMENT = "tr";
 }

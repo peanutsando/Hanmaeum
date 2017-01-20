@@ -1,5 +1,5 @@
 
-package kr.ac.mju.hanmaeum.activity.Notice;
+package kr.ac.mju.hanmaeum.activity.notice;
 
 import android.content.Context;
 import android.view.LayoutInflater;

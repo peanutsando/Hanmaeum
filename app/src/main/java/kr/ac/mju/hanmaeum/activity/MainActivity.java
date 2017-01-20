@@ -1,18 +1,11 @@
 package kr.ac.mju.hanmaeum.activity;
 
 import android.os.AsyncTask;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,14 +13,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.OnClick;
 import kr.ac.mju.hanmaeum.R;
-import kr.ac.mju.hanmaeum.activity.Notice.NoticeItem;
-import kr.ac.mju.hanmaeum.activity.Notice.NoticeListAdapter;
+import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
+import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
 public class MainActivity extends BaseActivity {

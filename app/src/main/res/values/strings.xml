@@ -15,6 +15,12 @@
     <string name="search">검색</string>
     <string name="loading">검색중입니다.</string>
 
+    <!-- Shuttle -->
+    <string name="vacation">공휴일 및 방학</string>
+    <string name="weekday">학기중</string>
+    <string name="season">계절학기</string>
+    <string name="downtownShuttle">시내셔틀</string>
+
     <!-- Date String -->
     <string name="attach_tag">첨부파일 :</string>
 
