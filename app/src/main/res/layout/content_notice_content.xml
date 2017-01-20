@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/card_no_border"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="kr.ac.mju.hanmaeum.activity.Notice.NoticeContent"
+    tools:showIn="@layout/activity_notice_content">
+
+    <TextView
+        android:id="@+id/contentTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:id="@+id/line1"
+        android:layout_below="@+id/contentTimestamp"
+        android:src="@drawable/line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/line1"
+        android:id="@+id/contentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="8dip"
+        android:textColor="#040404"
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/attachTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contentTitle"
+        android:layout_margin="4dp"
+        android:paddingLeft="10dip"
+        android:paddingRight="5dip"
+        android:textColor="#040404"
+        android:paddingTop="1dip"
+        android:text="@string/attach_tag"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/attachFile"
+        android:layout_toRightOf="@+id/attachTag"
+        android:layout_below="@+id/contentTitle"
+        android:layout_margin="4dp"
+        android:paddingRight="10dip"
+        android:textColor="@android:color/secondary_text_dark"
+        android:paddingTop="1dip"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_below="@+id/attachFile"
+        android:paddingTop="8dip"
+        android:id="@+id/line2"
+        android:src="@drawable/line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line2">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:paddingTop="1dip"
+                android:textColor="#040404"
+                android:textSize="11dp" />
+
+            <ImageView
+                android:id="@+id/contentImage"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_alignParentRight="true"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:scaleType="matrix"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
