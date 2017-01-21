@@ -1,8 +1,9 @@
 package kr.ac.mju.hanmaeum.utils;
 
 /**
- * Created by Youthink on 2017-01-09.
+ * Modified by Jinhyeon Park on 2017-01-21.
  */
+
 public class Constants {
     // Navigation Drawer
     // 셔틀버스
@@ -34,6 +35,13 @@ public class Constants {
     public static final String TIMESTAMP_ELEMENT = "td:eq(3)";
     public static final String CHECK_URL_ELEMENT = "td > a[href]";
     public static final String HREF_ELEMENT = "abs:href";
+
+    /* Intent CODE for notice */
+    public static final int ACTIVITY_REQUEST_CODE = 1;
+
+    /* NOTICE_CONTENT_PARAMS*/
+    public static final String NOTICE_TITLE ="제목 : ";
+    public static final String NOTICE_TIMESTAMP = "작성일 : ";
 
     public static final String SHUTTLE_TABLE_ELEMENT = "tr";
 }

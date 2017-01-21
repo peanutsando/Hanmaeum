@@ -1,11 +1,11 @@
 package kr.ac.mju.hanmaeum.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,9 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.ac.mju.hanmaeum.R;
+import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.utils.Constants;
+
+/**
+ * Modified by Jinhyeon Park on 2017-01-21.
+ */
 
 public class MainActivity extends BaseActivity {
     private ListView noticeListview;
@@ -52,7 +57,13 @@ public class MainActivity extends BaseActivity {
         noticeListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), title.get(position), Toast.LENGTH_SHORT).show();
+                /** If an item is clicked, it calls another activity for showing contents of notice */
+                Intent intent = new Intent(getApplicationContext(), NoticeContent.class);
+                intent.putExtra("URL", urlList.get(position));
+                intent.putExtra("TITLE", title.get(position));
+                intent.putExtra("TIMESTAMP", timestamp.get(position));
+
+                startActivityForResult(intent, Constants.ACTIVITY_REQUEST_CODE);
             }
         });
     }
@@ -112,9 +123,8 @@ public class MainActivity extends BaseActivity {
                 }
 
                 for(int i=0; i < number.size(); i++) {
-                    noticeListAdapter.addItem(number.get(i), title.get(i), timestamp.get(i));
+                    noticeListAdapter.addItem(number.get(i), title.get(i), timestamp.get(i), urlList.get(i));
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
