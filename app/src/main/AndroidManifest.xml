@@ -27,7 +27,8 @@
         </activity>
         <activity android:name=".activity.BaseActivity"></activity>
         <activity android:name=".activity.SubActivity"></activity>
-       >
+        <activity android:name=".activity.notice.NoticeContent"></activity>
+        >
     </application>
 
 </manifest>
