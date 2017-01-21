@@ -105,10 +105,10 @@ public class MainActivity extends BaseActivity {
 
                 // remove them. So We can get notices with number
                 for(int i=0; i<index; i++) {
-                    title.remove(i);
-                    number.remove(i);
-                    timestamp.remove(i);
-                    urlList.remove(i);
+                    title.remove(0);
+                    number.remove(0);
+                    timestamp.remove(0);
+                    urlList.remove(0);
                 }
 
                 for(int i=0; i < number.size(); i++) {
