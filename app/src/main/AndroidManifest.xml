@@ -15,6 +15,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
             >
         </activity>
         <activity android:name=".activity.MainActivity">

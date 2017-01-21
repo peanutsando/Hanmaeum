@@ -41,7 +41,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startActivity(new Intent(this,SplashActivity.class));// show splash
         setContentView(R.layout.activity_main); // get a layout
+
         this.setNavigationDrawer(savedInstanceState); // get navigation
 
         // get listView layout for notices and set Adapter to listView
@@ -130,6 +132,8 @@ public class MainActivity extends BaseActivity {
             }
             return null;
         }
+
+
 
         @Override
         protected void onPostExecute(List<NoticeItem> noticeItems) {

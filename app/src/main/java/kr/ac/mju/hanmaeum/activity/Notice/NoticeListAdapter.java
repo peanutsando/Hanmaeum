@@ -70,12 +70,13 @@ public class NoticeListAdapter extends BaseAdapter {
     }
 
     // 데이터 추가를 위한 함수
-    public void addItem(String number, String title, String timestamp) {
+    public void addItem(String number, String title, String timestamp, String url) {
         NoticeItem item = new NoticeItem();
 
         item.setNumber(number);
         item.setTitle(title);
         item.setTimestamp(timestamp);
+        item.setUrl(url);
 
         noticeItemList.add(item);
     }
