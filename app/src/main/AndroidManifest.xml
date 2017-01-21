@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,8 +26,7 @@
         </activity>
         <activity android:name=".activity.BaseActivity"></activity>
         <activity android:name=".activity.SubActivity"></activity>
-        <activity android:name=".activity.Splash"></activity>
-        <activity android:name=".activity.notice.NoticeContent"></activity>
+       >
     </application>
 
 </manifest>
