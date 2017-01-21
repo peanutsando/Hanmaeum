@@ -20,6 +20,7 @@
     <string name="weekday">학기중</string>
     <string name="season">계절학기</string>
     <string name="downtownShuttle">시내셔틀</string>
+    <string name="shuttleNotice">출발시각 및 진입로 경유시간은 도로교통상황에 따라 5~10분정도 지연될 수 있습니다.</string>
 
     <!-- Date String -->
     <string name="attach_tag">첨부파일 :</string>

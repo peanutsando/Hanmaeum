@@ -104,12 +104,12 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         drawer = new DrawerBuilder().withActivity(this).withTranslucentNavigationBar(false).withToolbar(toolbar)
                 .withHeader(layout)
                 .addDrawerItems(
-                        new SecondaryDrawerItem().withIcon(R.drawable.material_drawer_badge).withName(R.string.shuttle).withIdentifier(Constants.SHUTTLE_BUS),
-                        new SecondaryDrawerItem().withIcon(R.drawable.material_drawer_badge).withName(R.string.intercity).withIdentifier(Constants.INTERCITY_BUS),
-                        new SecondaryDrawerItem().withName(R.string.kobus).withIdentifier(Constants.KOBUS),
-                        new SecondaryDrawerItem().withName(R.string.load_search).withIdentifier(Constants.LOAD_SEARCH),
+                        new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.shuttle).withIdentifier(Constants.SHUTTLE_BUS),
+                        new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.intercity).withIdentifier(Constants.INTERCITY_BUS),
+                        new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.kobus).withIdentifier(Constants.KOBUS),
+                        new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_map).withName(R.string.load_search).withIdentifier(Constants.LOAD_SEARCH),
 //                        new SecondaryDrawerItem().withName(R.string.with_taxi).withIdentifier(Constants.WITH_TAXI),
-                        new SecondaryDrawerItem().withName(R.string.subway).withIdentifier(Constants.SUBWAY),
+                        new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_train).withName(R.string.subway).withIdentifier(Constants.SUBWAY),
                         new SecondaryDrawerItem().withName(R.string.search_log).withIdentifier(Constants.SEARCH_LOG)
                 ).withOnDrawerItemClickListener(this).withSelectedItem(-1)
                 .withSavedInstance(args).withShowDrawerOnFirstLaunch(true)
