@@ -1,5 +1,7 @@
 package kr.ac.mju.hanmaeum.utils;
 
+import kr.ac.mju.hanmaeum.R;
+
 /**
  * Modified by Jinhyeon Park on 2017-01-21.
  */
@@ -40,8 +42,34 @@ public class Constants {
     public static final int ACTIVITY_REQUEST_CODE = 1;
 
     /* NOTICE_CONTENT_PARAMS*/
-    public static final String NOTICE_TITLE ="제목 : ";
+    public static final String NOTICE_TITLE = "제목 : ";
     public static final String NOTICE_TIMESTAMP = "작성일 : ";
 
     public static final String SHUTTLE_TABLE_ELEMENT = "tr";
+
+    /* Subway */
+    public static final String SUBWAY_KEY = "465144726e7935753130344f704d5946";
+    public static String NORMAL_URL = "http://openAPI.seoul.go.kr:8088/";
+    public static String KEY = "/json/SearchSTNBySubwayLineService/";
+    public static final String[] SUBWAY_LINE_KEY = {
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "I", "K", "B", "A", "G", "S", "SU"
+    };
+    public static final int[] SUBWAY_LIEN_IMAGE = {
+            R.drawable.line1,
+            R.drawable.line2,
+            R.drawable.line3,
+            R.drawable.line4,
+            R.drawable.line5,
+            R.drawable.line6,
+            R.drawable.line7,
+            R.drawable.line8,
+            R.drawable.line9,
+            R.drawable.line_in,
+            R.drawable.line_kj,
+            R.drawable.line_b,
+            R.drawable.line_air,
+            R.drawable.line_g,
+            R.drawable.line_sin,
+            R.drawable.line_su,
+    };
 }

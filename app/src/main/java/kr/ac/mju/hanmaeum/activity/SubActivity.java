@@ -13,6 +13,7 @@ import butterknife.OnClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.fragment.InterCityFragment;
 import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
+import kr.ac.mju.hanmaeum.fragment.SubwayFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
 public class SubActivity extends AppCompatActivity {
@@ -55,12 +56,11 @@ public class SubActivity extends AppCompatActivity {
         } else if (index == Constants.LOAD_SEARCH) {
             title.setText(getString(R.string.load_search));
 
-        } else if (index == Constants.WITH_TAXI) {
-            title.setText(getString(R.string.with_taxi));
-
-        } else if (index == Constants.SUBWAY) {
+        }  else if (index == Constants.SUBWAY) {
             title.setText(getString(R.string.subway));
-
+            Fragment fragment = SubwayFragment.newInstance();
+            fragment.setArguments(savedInstanceState);
+            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.SEARCH_LOG) {
             title.setText(getString(R.string.search_log));
 
