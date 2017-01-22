@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
-import kr.ac.mju.hanmaeum.utils.Shuttle;
+import kr.ac.mju.hanmaeum.utils.shuttle.Shuttle;
 
 /**
  * Created by Youthink on 2017-01-20.

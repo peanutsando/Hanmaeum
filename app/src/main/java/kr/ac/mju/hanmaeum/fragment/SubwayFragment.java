@@ -8,13 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 
@@ -23,10 +21,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
+import kr.ac.mju.hanmaeum.utils.Encoder;
 import kr.ac.mju.hanmaeum.utils.adapter.SubwayAdapter;
+import kr.ac.mju.hanmaeum.utils.service.SubwayInfoService;
+import kr.ac.mju.hanmaeum.utils.subway.ArrivalInfo;
 import kr.ac.mju.hanmaeum.utils.subway.SearchSTNBySubwayLineService;
 import kr.ac.mju.hanmaeum.utils.service.SubwayService;
 import kr.ac.mju.hanmaeum.utils.subway.Subway;
+import kr.ac.mju.hanmaeum.utils.subway.realtimeStationArrival;
 import kr.ac.mju.hanmaeum.utils.subway.SubwayImages;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,7 +105,7 @@ public class SubwayFragment extends Fragment {
 
     // Start RestAPI
     private void callSubwayInfo(int x) {
-        final Call<SearchSTNBySubwayLineService> subwayInfo = SubwayService.api().getSubwayInfo(Constants.SUBWAY_LINE_KEY[x]);
+        final Call<SearchSTNBySubwayLineService> subwayInfo = SubwayService.subwayInfoApi().getSubwayInfo(Constants.SUBWAY_LINE_KEY[x]);
         subwayInfo.enqueue(new Callback<SearchSTNBySubwayLineService>() {
             @Override
             public void onResponse(Call<SearchSTNBySubwayLineService> call, Response<SearchSTNBySubwayLineService> response) {
@@ -116,19 +118,49 @@ public class SubwayFragment extends Fragment {
             }
 
             @Override public void onFailure(Call<SearchSTNBySubwayLineService> call, Throwable t) {
-                t.printStackTrace();
                 Toast.makeText(getActivity(), getString(R.string.on_Failure), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setSubwayList() {
-        ArrayList<Subway> list = subways.getSubway();
+        final ArrayList<Subway> list = subways.getSubway();
         for (Subway s : list) {
             int drawable = SubwayImages.getSubwayImages(s.getLINE_NUM());
             s.setSubway_images(drawable);
         }
         SubwayAdapter subwayAdapter = new SubwayAdapter(getActivity(), list);
         subwayList.setAdapter(subwayAdapter);
+
+        subwayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                String stationName = Encoder.decodeResult(list.get(i).getSTATION_NM());
+
+                final Call<realtimeStationArrival> subwayArrivalInfo = SubwayInfoService.subwayInfoApi().getSubwayArrivalInfo(stationName);
+                subwayArrivalInfo.enqueue(new Callback<realtimeStationArrival>() {
+                    @Override
+                    public void onResponse(Call<realtimeStationArrival> call, Response<realtimeStationArrival> response) {
+                        if (response.isSuccessful()) {
+                            realtimeStationArrival info = response.body();
+                            setArrivalInfo(info.getRealtimeArrivalList(), list.get(i).getSTATION_NM());
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.not_success), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<realtimeStationArrival> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(getActivity(), getString(R.string.on_Failure), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void setArrivalInfo(ArrayList<ArrivalInfo> arrivalInfo, String title){
+        Fragment fragment = SubwayArrivalFragment.newInstance(arrivalInfo, title);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
     }
 }

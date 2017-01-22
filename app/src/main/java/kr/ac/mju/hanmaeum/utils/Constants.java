@@ -48,9 +48,14 @@ public class Constants {
     public static final String SHUTTLE_TABLE_ELEMENT = "tr";
 
     /* Subway */
-    public static final String SUBWAY_KEY = "465144726e7935753130344f704d5946";
-    public static String NORMAL_URL = "http://openAPI.seoul.go.kr:8088/";
-    public static String KEY = "/json/SearchSTNBySubwayLineService/";
+    public static final String SUBWAY_INFO_KEY = "465144726e7935753130344f704d5946";
+    public static String SUBWAY_INFO_URL = "http://openAPI.seoul.go.kr:8088/";
+    public static String SUBWAY_INFO_PARAMS = "/json/SearchSTNBySubwayLineService/";
+
+    public static String SUBWAY_ARRIVAL_INFO_KEY = "484e444c6379357538354152775566";
+    public static String SUBWAY_ARRIVAL_INFO_URL = "http://swopenapi.seoul.go.kr/api/subway/";
+    public static String SUBWAY_ARRIVAL_INFO_PARAMS = "/json/realtimeStationArrival/";
+
     public static final String[] SUBWAY_LINE_KEY = {
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "I", "K", "B", "A", "G", "S", "SU"
     };

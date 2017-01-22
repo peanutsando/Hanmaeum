@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import kr.ac.mju.hanmaeum.utils.Constants;
-import kr.ac.mju.hanmaeum.utils.subway.SearchSTNBySubwayLineService;
+import kr.ac.mju.hanmaeum.utils.subway.realtimeStationArrival;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,9 +15,9 @@ import retrofit2.http.Path;
  * Created by Youthink on 2017-01-22.
  */
 
-public class SubwayService {
-
-    private static final String BASE_URL = Constants.SUBWAY_INFO_URL + Constants.SUBWAY_INFO_KEY + Constants.SUBWAY_INFO_PARAMS;
+public class SubwayInfoService {
+    private static final String BASE_URL = Constants.SUBWAY_ARRIVAL_INFO_URL
+            + Constants.SUBWAY_ARRIVAL_INFO_KEY + Constants.SUBWAY_ARRIVAL_INFO_PARAMS;
 
     public static Object retrofit(Class<?> className) {
         Gson gson = new GsonBuilder().setLenient().create();
@@ -36,8 +36,7 @@ public class SubwayService {
     }
 
     public interface ListAPI {
-        @GET("1/200/{id}/")
-        Call<SearchSTNBySubwayLineService> getSubwayInfo(@Path("id") String id);
+        @GET("1/30/{location}/")
+        Call<realtimeStationArrival> getSubwayArrivalInfo(@Path("location") String location);
     }
-
 }

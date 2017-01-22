@@ -31,6 +31,18 @@
     <string name="select_to_subway">지하철 노선을 선택하세요.</string>
     <string name="cancel">취소</string>
 
+    <string name="entry">(진입)</string>
+    <string name="arrival">(도착)</string>
+    <string name="leave">(출발)</string>
+    <string name="prev_leave">(전역출발)</string>
+    <string name="prev_entry">(전역진입)</string>
+    <string name="prev_arrival">(전역도착)</string>
+    <string name="running">(운행중)</string>
+
+    <string name="up_down_type">상하행선 구분 : </string>
+    <string name="perminute">분 남음</string>
+    <string name="final_station">종착역 : </string>
+
     <!-- Alert -->
     <string name="not_success">네트워크가 응답하지않습니다.</string>
     <string name="on_Failure">불러오는데 실패하였습니다.</string>
