@@ -3,6 +3,7 @@ package kr.ac.mju.hanmaeum.activity.notice;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ import kr.ac.mju.hanmaeum.activity.BaseActivity;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
 /**
- * Modified by Jinhyeon Park on 2017-01-21.
+ * Modified by Jinhyeon Park on 2017-01-22..
  */
 
 public class NoticeContent extends BaseActivity {
@@ -63,16 +64,119 @@ public class NoticeContent extends BaseActivity {
             try {
                 Document doc = Jsoup.connect(url).get();
 
+                Element element = doc.select("#divView").first();
+                Elements eChildren = element.children();
+                for(Element e : eChildren) {
+                    if(!e.text().equals("")) {
+                        e.text().replace("U+00A0", "<br />");
+                        content = content + e.text() + "<br />";
+                        //       content.replace("&nbsp", "<br /");
+                    }else {
+                        content = content + "<br />";
+                    }
+                }
+
+     /*           Element element = doc.select(Constants.DIV).first();
+                if(element != null) {
+                    element = doc.select("#divView > div > span").first();
+
+                    if(element != null) {
+                        Elements es = doc.select("#divView > div > span > p");
+
+                        *//** divView > div > span > p *//*
+                        for(Element e : es) {
+                            content = content + e.text() + "<br />";
+                        }
+                    }
+                }
+
+                element = doc.select("#divView > div > span").first();
+                if(element != null) {
+                    Elements es = doc.select("#divView > div > span");
+
+                    *//** divView > div > span > p *//*
+                    for(Element e : es) {
+                        content = content + e.text() + "<br />";
+                    }
+                }
+*/
+
+
+             /*   // div
+                if(element != null) {
+                    element = doc.select(Constants.DIV_SPAN).first();
+
+                    // div > span
+                    if(element != null) {
+                        element = doc.select(Constants.DIV_SPAN_P).first();
+
+                        // div > span > p
+                        if(element != null) {
+                            Elements es = doc.select(Constants.DIV_SPAN_P);
+
+                            *//** divView > div > span > p *//*
+                            for(Element e : es) {
+                                content = content + e.text() + "<br />";
+                            }
+
+                            // div > span
+                        } else {
+                            Elements es = doc.select(Constants.DIV_SPAN);
+
+                            *//** divView > div > span *//*
+                            for(Element e : es) {
+                                content = content + e.text() + "<br />";
+                            }
+                        }
+                    }else {
+                        Elements es = doc.select("#divView > div");
+
+                        for(Element e : es) {
+                            content = content + e.text() + "<br />";
+                        }
+                    }
+                } else {
+                    // div가 없다면
+                    element = doc.select("#divView > span").first();
+
+                    // span
+                    if(element != null) {
+                        element = doc.select("#divView > span > p").first();
+
+                        if(element != null) {
+                            Elements es = doc.select("#divView > span > p");
+
+                            for(Element e : es) {
+                                content = content + e.text() + "<br />";
+                            }
+                        }else {
+                            *//** *//*
+                            Elements es = doc.select("#divView > span");
+
+                            for(Element e : es) {
+                                content = content + e.text() + "<br />";
+                            }
+                        }
+                    }else {
+                        // div 와 span이 없기 때문에 p가 존재할 것.
+                        Elements es = doc.select("#divView > p");
+
+                        for(Element e : es) {
+                            content = content + e.text() + "<br />";
+                        }
+                    }
+                }*/
             } catch(IOException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return content;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            contentView.setText(Html.fromHtml(result));
         }
     }
 }
