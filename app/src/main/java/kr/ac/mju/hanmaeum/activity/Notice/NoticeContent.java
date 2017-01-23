@@ -1,11 +1,20 @@
 package kr.ac.mju.hanmaeum.activity.notice;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +22,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.BaseActivity;
@@ -26,6 +37,9 @@ public class NoticeContent extends BaseActivity {
     private String url, title, timestamp, content = "";
     private TextView timestampView, titleView, contentView, attachView;
     private GetContentTask getContentTask;
+    private GetImageContentTask getImageContentTask;
+    private ArrayList<String> imgList;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +58,9 @@ public class NoticeContent extends BaseActivity {
         contentView = (TextView) findViewById(R.id.content);
         attachView = (TextView) findViewById(R.id.attachFile);
 
+        linearLayout = (LinearLayout) findViewById(R.id.content_Linear);
+        imgList = new ArrayList<String>();
+
         // get title and timestamp from MainActivity.
         titleView.setText(Constants.NOTICE_TITLE + title);
         timestampView.setText(Constants.NOTICE_TIMESTAMP + timestamp);
@@ -51,6 +68,9 @@ public class NoticeContent extends BaseActivity {
         // operate getContentTask for crawling
         getContentTask = new GetContentTask();
         getContentTask.execute();
+
+        getImageContentTask = new GetImageContentTask();
+        getImageContentTask.execute();
     }
 
     class GetContentTask extends AsyncTask<Void, Void, String> {
@@ -68,104 +88,12 @@ public class NoticeContent extends BaseActivity {
                 Elements eChildren = element.children();
                 for(Element e : eChildren) {
                     if(!e.text().equals("")) {
-                        e.text().replace("U+00A0", "<br />");
+//                      e.text().replace("U+00A0", "<br />");
                         content = content + e.text() + "<br />";
-                        //       content.replace("&nbsp", "<br /");
                     }else {
                         content = content + "<br />";
                     }
                 }
-
-     /*           Element element = doc.select(Constants.DIV).first();
-                if(element != null) {
-                    element = doc.select("#divView > div > span").first();
-
-                    if(element != null) {
-                        Elements es = doc.select("#divView > div > span > p");
-
-                        *//** divView > div > span > p *//*
-                        for(Element e : es) {
-                            content = content + e.text() + "<br />";
-                        }
-                    }
-                }
-
-                element = doc.select("#divView > div > span").first();
-                if(element != null) {
-                    Elements es = doc.select("#divView > div > span");
-
-                    *//** divView > div > span > p *//*
-                    for(Element e : es) {
-                        content = content + e.text() + "<br />";
-                    }
-                }
-*/
-
-
-             /*   // div
-                if(element != null) {
-                    element = doc.select(Constants.DIV_SPAN).first();
-
-                    // div > span
-                    if(element != null) {
-                        element = doc.select(Constants.DIV_SPAN_P).first();
-
-                        // div > span > p
-                        if(element != null) {
-                            Elements es = doc.select(Constants.DIV_SPAN_P);
-
-                            *//** divView > div > span > p *//*
-                            for(Element e : es) {
-                                content = content + e.text() + "<br />";
-                            }
-
-                            // div > span
-                        } else {
-                            Elements es = doc.select(Constants.DIV_SPAN);
-
-                            *//** divView > div > span *//*
-                            for(Element e : es) {
-                                content = content + e.text() + "<br />";
-                            }
-                        }
-                    }else {
-                        Elements es = doc.select("#divView > div");
-
-                        for(Element e : es) {
-                            content = content + e.text() + "<br />";
-                        }
-                    }
-                } else {
-                    // div가 없다면
-                    element = doc.select("#divView > span").first();
-
-                    // span
-                    if(element != null) {
-                        element = doc.select("#divView > span > p").first();
-
-                        if(element != null) {
-                            Elements es = doc.select("#divView > span > p");
-
-                            for(Element e : es) {
-                                content = content + e.text() + "<br />";
-                            }
-                        }else {
-                            *//** *//*
-                            Elements es = doc.select("#divView > span");
-
-                            for(Element e : es) {
-                                content = content + e.text() + "<br />";
-                            }
-                        }
-                    }else {
-                        // div 와 span이 없기 때문에 p가 존재할 것.
-                        Elements es = doc.select("#divView > p");
-
-                        for(Element e : es) {
-                            content = content + e.text() + "<br />";
-                        }
-                    }
-                }*/
             } catch(IOException e) {
                 e.printStackTrace();
             }
@@ -177,6 +105,55 @@ public class NoticeContent extends BaseActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             contentView.setText(Html.fromHtml(result));
+        }
+    }
+
+    class GetImageContentTask extends  AsyncTask<Void, Void, ArrayList<String>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ArrayList<String> doInBackground(Void... params) {
+            try {
+                Document doc = Jsoup.connect(url).timeout(0).get();
+
+                Elements imgs = doc.select("#divView > img");
+                if(!imgs.isEmpty()) {
+                    for(Element img : imgs) {
+                        imgList.add(img.attr("src"));
+                    }
+                }else {
+                    imgs = doc.select("#divView > p > img");
+
+                    for(Element img : imgs) {
+                        imgList.add(img.attr("src"));
+                    }
+                }
+
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            return imgList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> imgList) {
+            super.onPostExecute(imgList);
+
+            for(int i=0; i< imgList.size(); i++) {
+                ImageView imgView = new ImageView(NoticeContent.this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT); // width, height
+                imgView.setLayoutParams(lp);
+
+                /* */
+                Glide.with(NoticeContent.this)
+                        .load(imgList.get(i))
+                        .override(700,700)
+                        .into(imgView);
+                linearLayout.addView(imgView);
+            }
         }
     }
 }

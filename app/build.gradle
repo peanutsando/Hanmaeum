@@ -26,10 +26,6 @@ dependencies {
         transitive = true
     }
 
-    // for parse notice
-    // for design library
-
-
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'cn.pedant.sweetalert:library:1.3'

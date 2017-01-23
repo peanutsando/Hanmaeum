@@ -83,7 +83,8 @@
             android:paddingRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/content_Linear">
 
             <TextView
                 android:id="@+id/content"
@@ -95,17 +96,6 @@
                 android:paddingTop="1dip"
                 android:textColor="#040404"
                 android:textSize="11dp" />
-
-            <ImageView
-                android:id="@+id/contentImage"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_alignParentRight="true"
-                android:adjustViewBounds="true"
-                android:layout_height="match_parent"
-                android:scaleType="matrix"
-                />
-
         </LinearLayout>
 
     </ScrollView>
