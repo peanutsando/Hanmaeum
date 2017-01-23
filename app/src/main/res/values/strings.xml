@@ -21,7 +21,11 @@
     <string name="season">계절학기</string>
     <string name="downtownShuttle">시내셔틀</string>
     <string name="shuttleNotice">출발시각 및 진입로 경유시간은 도로교통상황에 따라 5~10분정도 지연될 수 있습니다.</string>
-
+    <string name="shuttle_number">번호</string>
+    <string name="shuttle_type">종류</string>
+    <string name="shuttle_start_time">출발 시간</string>
+    <string name="shuttle_ramp_time">진입로 경유 시간</string>
+    <string name="shuttle_favorite">즐겨찾기</string>
     <!-- Date String -->
     <string name="attach_tag">첨부파일 :</string>
 
@@ -46,6 +50,10 @@
     <!-- Alert -->
     <string name="not_success">네트워크가 응답하지않습니다.</string>
     <string name="on_Failure">불러오는데 실패하였습니다.</string>
+
+    <!-- Splash -->
+    <string name="splash_subject">한마음</string>
+    <string name="splash_department">명지대학교 컴퓨터공학과과</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
