@@ -1,10 +1,15 @@
 package kr.ac.mju.hanmaeum.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.jsoup.Jsoup;
@@ -21,6 +26,7 @@ import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.utils.Constants;
+import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
 
 /**
  * Modified by Jinhyeon Park on 2017-01-21.
@@ -68,7 +74,9 @@ public class MainActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.ACTIVITY_REQUEST_CODE);
             }
         });
+
     }
+
 
     // Change UI (add notices to ListView) using AsyncTask
     class GetNoticeTask extends AsyncTask<Void, Void, List<NoticeItem>> {
