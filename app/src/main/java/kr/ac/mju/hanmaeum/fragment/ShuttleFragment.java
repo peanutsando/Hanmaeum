@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.jsoup.Jsoup;
@@ -26,7 +27,7 @@ import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
 public class ShuttleFragment extends Fragment {
 
     private ArrayList<Shuttle> shuttleList;
-
+    private ImageView imageView;
     @BindView(R.id.shuttleTime)
     ListView shuttleTime;
 
@@ -57,7 +58,6 @@ public class ShuttleFragment extends Fragment {
         GetShuttleTime getShuttleTime = new GetShuttleTime();
         getShuttleTime.execute();
 
-
         return view;
     }
 
@@ -87,6 +87,7 @@ public class ShuttleFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return null;
         }
 

@@ -17,4 +17,28 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:text="@string/splash_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/md_black_1000"
+        android:textSize="69sp"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:text="@string/splash_department"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/md_black_1000"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"/>
+
+
+
 </RelativeLayout>
