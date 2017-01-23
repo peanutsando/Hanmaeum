@@ -6,7 +6,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 /**
- * Created by Youthink on 2017-01-22.
+ * Created by Youthink on 2017-01-23.
  */
 
 public class Encoder {
