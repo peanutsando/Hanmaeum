@@ -1,4 +1,4 @@
-package kr.ac.mju.hanmaeum.utils.shuttle;
+package kr.ac.mju.hanmaeum.utils.object.shuttle;
 
 /**
  * Created by Youthink on 2017-01-20.

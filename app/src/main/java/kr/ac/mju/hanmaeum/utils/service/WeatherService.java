@@ -4,26 +4,24 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import kr.ac.mju.hanmaeum.utils.Constants;
-import kr.ac.mju.hanmaeum.utils.object.subway.realtimeStationArrival;
+import kr.ac.mju.hanmaeum.utils.object.weather.Info;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
- * Created by Youthink on 2017-01-22.
+ * Created by Youthink on 2017-01-24.
  */
 
-public class SubwayInfoService {
-    private static final String BASE_URL = Constants.SUBWAY_ARRIVAL_INFO_URL
-            + Constants.SUBWAY_ARRIVAL_INFO_KEY + Constants.SUBWAY_ARRIVAL_INFO_PARAMS;
+public class WeatherService {
 
     public static Object retrofit(Class<?> className) {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(Constants.WEATHER_URL)
                 .client(RestApiLogging.HttpLoggingIntercept())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -36,7 +34,7 @@ public class SubwayInfoService {
     }
 
     public interface ListAPI {
-        @GET("1/30/{location}/")
-        Call<realtimeStationArrival> getSubwayArrivalInfo(@Path("location") String location);
+        @GET("data/2.5/weather")
+        Call<Info> getWeatherInfo(@Query("lat") double lat, @Query("lon") double lon, @Query("APPID") String APPID);
     }
 }

@@ -11,12 +11,17 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    dexOptions{
+        jumboMode true
+        javaMaxHeapSize "4g"
     }
 }
 
@@ -38,4 +43,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'com.google.maps:google-maps-services:0.1.15'
+    compile 'com.google.android.gms:play-services:10.0.1'
+    compile 'gun0912.ted:tedpermission:1.0.2'
+    compile 'com.android.support:multidex:1.0.1'
 }

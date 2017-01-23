@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
-import kr.ac.mju.hanmaeum.utils.subway.ArrivalInfo;
+import kr.ac.mju.hanmaeum.utils.object.subway.ArrivalInfo;
 
 /**
  * Created by Youthink on 2017-01-22.

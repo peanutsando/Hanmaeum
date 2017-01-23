@@ -1,4 +1,4 @@
-package kr.ac.mju.hanmaeum.utils.subway;
+package kr.ac.mju.hanmaeum.utils.object.subway;
 
 import kr.ac.mju.hanmaeum.utils.Constants;
 

@@ -88,4 +88,8 @@ public class Constants {
             R.drawable.line_sin,
             R.drawable.line_su,
     };
+
+    /* Info */
+    public static final String WEATHER_KEY = "21d42754e1e68e44f1282daac7b1576f";
+    public static final String WEATHER_URL = "http://api.openweathermap.org/";
 }

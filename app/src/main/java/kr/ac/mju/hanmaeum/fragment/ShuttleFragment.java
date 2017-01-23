@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
-import kr.ac.mju.hanmaeum.utils.shuttle.Shuttle;
+import kr.ac.mju.hanmaeum.utils.object.shuttle.Shuttle;
 import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
 
 public class ShuttleFragment extends Fragment {

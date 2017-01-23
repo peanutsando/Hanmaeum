@@ -1,7 +1,5 @@
 package kr.ac.mju.hanmaeum.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.adapter.SubwayArrivalAdapter;
-import kr.ac.mju.hanmaeum.utils.subway.ArrivalInfo;
+import kr.ac.mju.hanmaeum.utils.object.subway.ArrivalInfo;
 
 public class SubwayArrivalFragment extends Fragment {
 
