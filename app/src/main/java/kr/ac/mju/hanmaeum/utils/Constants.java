@@ -37,6 +37,17 @@ public class Constants {
     public static final String TIMESTAMP_ELEMENT = "td:eq(3)";
     public static final String CHECK_URL_ELEMENT = "td > a[href]";
     public static final String HREF_ELEMENT = "abs:href";
+    public static final String DIVVIEW = "#divView";
+    public static final String DIVVIEW_IMG = "#divView > img";
+    public static final String DIVVIEW_P_IMG = "#divView > p > img";
+    public static final String IMG_ATTR = "src";
+
+    /* Glide Picture Size */
+    public static final int GLIDE_WIDTH = 700;
+    public static final int GLIDE_HEIGHT = 700;
+
+    /* HTML TAG */
+    public static final String BR = "<br />";
 
     /* Intent CODE for notice */
     public static final int ACTIVITY_REQUEST_CODE = 1;

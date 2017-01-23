@@ -30,7 +30,7 @@ import kr.ac.mju.hanmaeum.activity.BaseActivity;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
 /**
- * Modified by Jinhyeon Park on 2017-01-22..
+ * Modified by Jinhyeon Park on 2017-01-23..
  */
 
 public class NoticeContent extends BaseActivity {
@@ -84,14 +84,14 @@ public class NoticeContent extends BaseActivity {
             try {
                 Document doc = Jsoup.connect(url).get();
 
-                Element element = doc.select("#divView").first();
+                Element element = doc.select(Constants.DIVVIEW).first();
                 Elements eChildren = element.children();
                 for(Element e : eChildren) {
                     if(!e.text().equals("")) {
 //                      e.text().replace("U+00A0", "<br />");
-                        content = content + e.text() + "<br />";
+                        content = content + e.text() + Constants.BR;
                     }else {
-                        content = content + "<br />";
+                        content = content + Constants.BR;
                     }
                 }
             } catch(IOException e) {
@@ -119,16 +119,16 @@ public class NoticeContent extends BaseActivity {
             try {
                 Document doc = Jsoup.connect(url).timeout(0).get();
 
-                Elements imgs = doc.select("#divView > img");
+                Elements imgs = doc.select(Constants.DIVVIEW_IMG);
                 if(!imgs.isEmpty()) {
                     for(Element img : imgs) {
-                        imgList.add(img.attr("src"));
+                        imgList.add(img.attr(Constants.IMG_ATTR));
                     }
                 }else {
-                    imgs = doc.select("#divView > p > img");
+                    imgs = doc.select(Constants.DIVVIEW_P_IMG);
 
                     for(Element img : imgs) {
-                        imgList.add(img.attr("src"));
+                        imgList.add(img.attr(Constants.IMG_ATTR));
                     }
                 }
 
@@ -150,7 +150,7 @@ public class NoticeContent extends BaseActivity {
                 /* */
                 Glide.with(NoticeContent.this)
                         .load(imgList.get(i))
-                        .override(700,700)
+                        .override(Constants.GLIDE_WIDTH, Constants.GLIDE_HEIGHT)
                         .into(imgView);
                 linearLayout.addView(imgView);
             }
