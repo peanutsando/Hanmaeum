@@ -62,7 +62,6 @@ public class SubActivity extends AppCompatActivity {
             fragment.setArguments(savedInstanceState);
             getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.SEARCH_LOG) {
-            title.setText(getString(R.string.search_log));
 
         }
     }

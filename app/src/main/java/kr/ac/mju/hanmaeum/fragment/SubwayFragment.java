@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
-import kr.ac.mju.hanmaeum.utils.Encoder;
+import kr.ac.mju.hanmaeum.utils.Encoding;
 import kr.ac.mju.hanmaeum.utils.adapter.SubwayAdapter;
 import kr.ac.mju.hanmaeum.utils.service.SubwayInfoService;
 import kr.ac.mju.hanmaeum.utils.subway.ArrivalInfo;
@@ -135,7 +135,7 @@ public class SubwayFragment extends Fragment {
         subwayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                String stationName = Encoder.decodeResult(list.get(i).getSTATION_NM());
+                String stationName = Encoding.decodeResult(list.get(i).getSTATION_NM());
 
                 final Call<realtimeStationArrival> subwayArrivalInfo = SubwayInfoService.subwayInfoApi().getSubwayArrivalInfo(stationName);
                 subwayArrivalInfo.enqueue(new Callback<realtimeStationArrival>() {

@@ -8,25 +8,43 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="195dip"
-        android:background="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"
+
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_marginTop="30dp"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_gravity="center"
-            android:src="@drawable/icon"/>
+        <LinearLayout
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:textSize="18dp"
-            android:text="@string/navigation_text"/>
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:src="@drawable/ic_launcher"
+                android:layout_weight="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="서울시"
+                android:gravity="center"
+                android:layout_weight="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="-13도"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

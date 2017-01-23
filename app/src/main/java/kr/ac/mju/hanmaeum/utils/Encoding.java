@@ -9,8 +9,7 @@ import java.net.URLEncoder;
  * Created by Youthink on 2017-01-23.
  */
 
-public class Encoder {
-
+public class Encoding {
     private static final String TAG = "Encoder Error";
     private static final String CHARSET = "utf-8";
 
