@@ -8,6 +8,7 @@
     <string name="load_search">지하철길찾기</string>
     <string name="where_shuttle">셔틀타는곳</string>
     <string name="subway">지하철</string>
+    <string name="notice">공지사항</string>
 
     <string name="navigation_text">대중교통 정보 서비스</string>
     <string name="search_hint">검색어를 입력해주세요.</string>

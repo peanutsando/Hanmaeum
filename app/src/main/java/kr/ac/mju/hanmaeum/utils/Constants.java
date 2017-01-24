@@ -31,6 +31,14 @@ public class Constants {
     public static final String NOTICE_URL = "http://jw4.mju.ac.kr/user/boardList.action?boardId=28510945&page=1";
     public static final String SHUTTLE_URL = "http://www.mju.ac.kr/mbs/mjukr/campusmap/HT5/CampusMap_yi_02_sub03.jsp";
 
+    /* NOTICE ACTIONBAR TITLE*/
+    public static final String ACTION_TITLE = "공지사항";
+
+    /* NoticeContent GET INTENT DATA */
+    public static final String URL = "URL";
+    public static final String TIMESTAMP = "TIMESTAMP";
+    public static final String TITLE = "TITLE";
+
     /* JSOUP PARSING TAG */
     public static final String TITLE_ELEMENT = "td[class=title]";
     public static final String NUMBER_ELEMENT = "td[class=no]";
