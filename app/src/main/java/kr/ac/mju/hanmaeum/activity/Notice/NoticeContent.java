@@ -43,7 +43,7 @@ import android.support.v7.app.ActionBar;
 
 public class NoticeContent extends BaseActivity {
     private String url, title, timestamp, content = "";
-
+/*
     @BindView(R.id.contentTimestamp)
     TextView timestampView;
 
@@ -54,11 +54,14 @@ public class NoticeContent extends BaseActivity {
     TextView attachView;
 
     @BindView(R.id.content_Linear)
-    LinearLayout linearLayout;
+    LinearLayout linearLayout;*/
 
+    private TextView timestampView, titleView, attachView;
+    private GetAttachFileTask getAttachFileTask;
     private GetContentTask getContentTask;
     private GetImageContentTask getImageContentTask;
-    private ArrayList<String> imgList;
+    private ArrayList<String> imgList, attachList;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,9 @@ public class NoticeContent extends BaseActivity {
         // operate getContentTask for crawling
         getImageContentTask = new GetImageContentTask();
         getImageContentTask.execute();
+
+        getAttachFileTask = new GetAttachFileTask();
+        getAttachFileTask.execute();
     }
 
     private void Init() {
@@ -81,12 +87,51 @@ public class NoticeContent extends BaseActivity {
         timestamp = getIntent.getStringExtra(Constants.TIMESTAMP);
 
         imgList = new ArrayList<String>();
+        timestampView = (TextView) findViewById(R.id.contentTimestamp);
+        titleView = (TextView) findViewById(R.id.contentTitle);
+        attachView = (TextView) findViewById(R.id.attachFile);
+        linearLayout = (LinearLayout) findViewById(R.id.content_Linear);
     }
 
     private void RegisterBasicInfo() {
-        // get title and timestamp and then set it on noticeContent
+        // get title and timestamp and then set it on noticeContent.
         titleView.setText(Constants.NOTICE_TITLE + title);
         timestampView.setText(Constants.NOTICE_TIMESTAMP + timestamp);
+    }
+
+    class GetAttachFileTask extends AsyncTask<Void, Void, String> {
+        String str = "";
+
+        @Override
+        protected void onPreExecute() { super.onPreExecute(); }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                Document doc = Jsoup.connect(url).get();
+
+                Elements attachFiles = doc.select("td > a > img");
+                if(!attachFiles.isEmpty()) {
+                    for(Element attachFile : attachFiles) {
+                        Log.e("NOT EMPTY@@@@@@@@@@@@@@@@@", attachFile.toString());
+                        //str = attac
+                    }
+                } else {
+                    str = "첨부파일이 없습니다.";
+                }
+
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+
+            return str;
+        }
+
+        @Override
+        protected void onPostExecute(String str) {
+            super.onPostExecute(str);
+            attachView.setText(str);
+        }
     }
 
     class GetContentTask extends AsyncTask<Void, Void, String> {
@@ -155,7 +200,6 @@ public class NoticeContent extends BaseActivity {
                 e.printStackTrace();
             }
 
-            // return imgList
             return imgList;
         }
 
