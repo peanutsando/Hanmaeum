@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import kr.ac.mju.hanmaeum.R;
 
 /**
@@ -18,6 +19,14 @@ import kr.ac.mju.hanmaeum.R;
 
 public class NoticeListAdapter extends BaseAdapter {
     private ArrayList<NoticeItem> noticeItemList = new ArrayList<NoticeItem>();
+    @BindView(R.id.item_number)
+    TextView numberTextView;
+
+    @BindView(R.id.item_noticeTitle)
+    TextView titleTextView;
+
+    @BindView(R.id.item_timestamp)
+    TextView timestampTextView;
 
     public NoticeListAdapter() {}
 
@@ -37,11 +46,6 @@ public class NoticeListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.activity_notice_item, viewGroup, false);
         }
-
-        // 화면에 표시될 View(layout이 inflate 된)으로부터 위젯에 대한 참조 획득..
-        TextView numberTextView = (TextView) view.findViewById(R.id.item_number);
-        TextView titleTextView = (TextView) view.findViewById(R.id.item_noticeTitle);
-        TextView timestampTextView = (TextView) view.findViewById(R.id.item_timestamp);
 
         // Data Set(noticeItemList)에서 position에 위치한 데이터 참조 획득
         NoticeItem noticeItem = noticeItemList.get(position);

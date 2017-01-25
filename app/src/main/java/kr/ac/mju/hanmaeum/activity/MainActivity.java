@@ -26,6 +26,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
@@ -42,9 +45,11 @@ import retrofit2.Response;
  */
 
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener {
 
-    private ListView noticeListview;
+    @BindView(R.id.noticeListview)
+    ListView noticeListview;
+
     private NoticeListAdapter noticeListAdapter = null;
 
     // Values for notice
@@ -70,6 +75,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         }
 
         setContentView(R.layout.activity_main); // get a layout
+        ButterKnife.bind(this);
 
         this.setNavigationDrawer(savedInstanceState); // get navigation
 
@@ -79,8 +85,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
 
+
         // get listView layout for notices and set Adapter to listView
-        noticeListview = (ListView) findViewById(R.id.noticeListview);
         noticeListAdapter = new NoticeListAdapter();
         noticeListview.setAdapter(noticeListAdapter);
 
@@ -88,20 +94,19 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         getNoticeTask = new GetNoticeTask();
         getNoticeTask.execute();
 
-        // add onItemClickListener using anonymous class
-        noticeListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /** If an item is clicked, it calls another activity for showing contents of notice */
-                Intent intent = new Intent(getApplicationContext(), NoticeContent.class);
-                intent.putExtra("URL", urlList.get(position));
-                intent.putExtra("TITLE", title.get(position));
-                intent.putExtra("TIMESTAMP", timestamp.get(position));
+        // Register eventListener of listView for click event
+        noticeListview.setOnItemClickListener(this);
+    }
 
-                startActivityForResult(intent, Constants.ACTIVITY_REQUEST_CODE);
-            }
-        });
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        /** If an item is clicked, it calls another activity for showing contents of notice */
+        Intent intent = new Intent(getApplicationContext(), NoticeContent.class);
+        intent.putExtra("URL", urlList.get(position));
+        intent.putExtra("TITLE", title.get(position));
+        intent.putExtra("TIMESTAMP", timestamp.get(position));
 
+        startActivityForResult(intent, Constants.ACTIVITY_REQUEST_CODE);
     }
 
     @Override public void onConnected(Bundle bundle) {
@@ -151,7 +156,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .addApi(LocationServices.API)
                 .build();
     }
-
 
     // Change UI (add notices to ListView) using AsyncTask
     class GetNoticeTask extends AsyncTask<Void, Void, List<NoticeItem>> {

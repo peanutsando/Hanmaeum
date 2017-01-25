@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.BaseActivity;
 import kr.ac.mju.hanmaeum.activity.SubActivity;
@@ -37,51 +38,55 @@ import kr.ac.mju.hanmaeum.utils.Constants;
 import android.support.v7.app.ActionBar;
 
 /**
- * Modified by Jinhyeon Park on 2017-01-24..
+ * Modified by Jinhyeon Park on 2017-01-25.
  */
 
 public class NoticeContent extends BaseActivity {
     private String url, title, timestamp, content = "";
-    private TextView timestampView, titleView, attachView;
+
+    @BindView(R.id.contentTimestamp)
+    TextView timestampView;
+
+    @BindView(R.id.contentTitle)
+    TextView titleView;
+
+    @BindView(R.id.attachFile)
+    TextView attachView;
+
+    @BindView(R.id.content_Linear)
+    LinearLayout linearLayout;
+
     private GetContentTask getContentTask;
     private GetImageContentTask getImageContentTask;
     private ArrayList<String> imgList;
-    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice_content);
 
-/*
-        // Set Actionbar Title
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-        TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        toolbar.setTitle(Constants.ACTION_TITLE);
-*/
+        Init();
+        RegisterBasicInfo();
 
+        // operate getContentTask for crawling
+        getImageContentTask = new GetImageContentTask();
+        getImageContentTask.execute();
+    }
+
+    private void Init() {
         // get intent from MainActivity.
         Intent getIntent = getIntent();
         url = getIntent.getStringExtra(Constants.URL);
         title = getIntent.getStringExtra(Constants.TITLE);
         timestamp = getIntent.getStringExtra(Constants.TIMESTAMP);
 
-        // Set layout contents and I will change this using ButterKnife and detach them to initFunction.
-        timestampView = (TextView) findViewById(R.id.contentTimestamp);
-        titleView = (TextView) findViewById(R.id.contentTitle);
-        //       contentView = (TextView) findViewById(R.id.content);
-        attachView = (TextView) findViewById(R.id.attachFile);
-
-        linearLayout = (LinearLayout) findViewById(R.id.content_Linear);
         imgList = new ArrayList<String>();
+    }
 
-        // get title and timestamp from MainActivity.
+    private void RegisterBasicInfo() {
+        // get title and timestamp and then set it on noticeContent
         titleView.setText(Constants.NOTICE_TITLE + title);
         timestampView.setText(Constants.NOTICE_TIMESTAMP + timestamp);
-
-        // operate getContentTask for crawling
-        getImageContentTask = new GetImageContentTask();
-        getImageContentTask.execute();
     }
 
     class GetContentTask extends AsyncTask<Void, Void, String> {
@@ -99,7 +104,6 @@ public class NoticeContent extends BaseActivity {
                 Elements eChildren = element.children();
                 for(Element e : eChildren) {
                     if(!e.text().equals("")) {
-//                      e.text().replace("U+00A0", "<br />");
                         content = content + e.text() + Constants.BR;
                     }else {
                         content = content + Constants.BR;
@@ -129,6 +133,7 @@ public class NoticeContent extends BaseActivity {
         }
 
         @Override
+        /* Get url src from homepage and insert that into imgs (ArrayString) */
         protected ArrayList<String> doInBackground(Void... params) {
             try {
                 Document doc = Jsoup.connect(url).timeout(0).get();
@@ -150,10 +155,12 @@ public class NoticeContent extends BaseActivity {
                 e.printStackTrace();
             }
 
+            // return imgList
             return imgList;
         }
 
         @Override
+        /* imgList has arrayString about img url src */
         protected void onPostExecute(ArrayList<String> imgList) {
             super.onPostExecute(imgList);
 
