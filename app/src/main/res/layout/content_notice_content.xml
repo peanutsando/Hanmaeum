@@ -21,16 +21,16 @@
 
     <ImageView
         android:id="@+id/line1"
-        android:layout_below="@+id/contentTimestamp"
-        android:src="@drawable/line"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contentTimestamp"
+        android:src="@drawable/line" />
 
     <TextView
-        android:layout_below="@+id/line1"
         android:id="@+id/contentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/line1"
         android:layout_margin="4dp"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
@@ -39,38 +39,53 @@
         android:textSize="12dp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/attachTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/contentTitle"
-        android:layout_margin="4dp"
-        android:paddingLeft="10dip"
-        android:paddingRight="5dip"
-        android:textColor="#040404"
-        android:paddingTop="1dip"
-        android:text="@string/attach_tag"
-        android:textStyle="bold" />
+    <ScrollView
+        android:id="@+id/scroll2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/contentTitle">
 
-    <TextView
-        android:id="@+id/attachFile"
-        android:layout_toRightOf="@+id/attachTag"
-        android:layout_below="@+id/contentTitle"
-        android:layout_margin="4dp"
-        android:paddingRight="10dip"
-        android:textColor="@android:color/secondary_text_dark"
-        android:paddingTop="1dip"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:id="@+id/attachLinear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:id="@+id/attachTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:paddingLeft="10dip"
+                android:paddingRight="5dip"
+                android:paddingTop="1dip"
+                android:text="@string/attach_tag"
+                android:textColor="#040404"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/attachFile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_toRightOf="@+id/attachTag"
+                android:paddingRight="10dip"
+                android:paddingTop="1dip"
+                android:textColor="@android:color/secondary_text_dark"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </ScrollView>
 
     <ImageView
-        android:layout_below="@+id/attachFile"
-        android:paddingTop="8dip"
         android:id="@+id/line2"
-        android:src="@drawable/line"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scroll2"
+        android:paddingTop="8dip"
+        android:src="@drawable/line" />
 
     <ScrollView
         android:id="@+id/scroll"
@@ -79,12 +94,12 @@
         android:layout_below="@+id/line2">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:paddingRight="5dp"
-            android:layout_marginTop="5dp"
+            android:id="@+id/content_Linear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/content_Linear">
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:paddingRight="5dp">
 
             <!--
             <TextView

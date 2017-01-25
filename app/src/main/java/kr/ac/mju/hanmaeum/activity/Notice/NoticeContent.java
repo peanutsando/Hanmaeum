@@ -60,7 +60,7 @@ public class NoticeContent extends BaseActivity {
     private GetAttachFileTask getAttachFileTask;
     private GetContentTask getContentTask;
     private GetImageContentTask getImageContentTask;
-    private ArrayList<String> imgList, attachList;
+    private ArrayList<String> imgList, attachList, attachUrlList;
     private LinearLayout linearLayout;
 
     @Override
@@ -87,6 +87,9 @@ public class NoticeContent extends BaseActivity {
         timestamp = getIntent.getStringExtra(Constants.TIMESTAMP);
 
         imgList = new ArrayList<String>();
+        attachList = new ArrayList<String>();
+        attachUrlList = new ArrayList<String>();
+
         timestampView = (TextView) findViewById(R.id.contentTimestamp);
         titleView = (TextView) findViewById(R.id.contentTitle);
         attachView = (TextView) findViewById(R.id.attachFile);
@@ -99,38 +102,41 @@ public class NoticeContent extends BaseActivity {
         timestampView.setText(Constants.NOTICE_TIMESTAMP + timestamp);
     }
 
-    class GetAttachFileTask extends AsyncTask<Void, Void, String> {
-        String str = "";
-
+    class GetAttachFileTask extends AsyncTask<Void, Void, ArrayList<String>> {
         @Override
         protected void onPreExecute() { super.onPreExecute(); }
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected ArrayList<String> doInBackground(Void... params) {
             try {
                 Document doc = Jsoup.connect(url).get();
 
                 Elements attachFiles = doc.select("td > a > img");
                 if(!attachFiles.isEmpty()) {
                     for(Element attachFile : attachFiles) {
-                        Log.e("NOT EMPTY@@@@@@@@@@@@@@@@@", attachFile.toString());
-                        //str = attac
+                        attachList.add(attachFile.parent().text());
+                        attachUrlList.add(attachFile.parent().attr("href").toString());
+
+                       // Log.e("TEST@@@@@@@@@@@@@@@@@@@@@", attachFile.parent().text());
                     }
                 } else {
-                    str = "첨부파일이 없습니다.";
+                    attachList.add("첨부파일이 없습니다.");
                 }
 
             } catch(IOException e) {
                 e.printStackTrace();
             }
 
-            return str;
+            return attachList;
         }
 
         @Override
-        protected void onPostExecute(String str) {
-            super.onPostExecute(str);
-            attachView.setText(str);
+        protected void onPostExecute(ArrayList<String> attList) {
+            super.onPostExecute(attList);
+
+            for(int i=0; i < attList.size(); i++) {
+                attachView.setText(Html.fromHtml("<a href="+ attachUrlList.get(i) + ">" + attachView.getText() + attList.get(i).toString() + "<br /"));
+            }
         }
     }
 
