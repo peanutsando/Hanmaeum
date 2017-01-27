@@ -23,7 +23,6 @@ public class ShuttleAdapter extends BaseAdapter {
 
     private ArrayList<Shuttle> shuttles;
     private Context context;
-    private ImageView imageView;
     // 어떤페이지에서 가져왔는지, 어떤 자료를 가져왔는지
     public ShuttleAdapter(Context context, ArrayList<Shuttle> shuttles) {
         this.shuttles = shuttles;
@@ -46,7 +45,7 @@ public class ShuttleAdapter extends BaseAdapter {
     }
 
     @Override public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder holder;
+        final ViewHolder holder;
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,6 +65,12 @@ public class ShuttleAdapter extends BaseAdapter {
         holder.shuttle_start_time.setText(shuttle.getStart_time());
         holder.shuttle_ramp_time.setText(shuttle.getRamp_time());
 
+            holder.bookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.bookmark.setImageResource(R.drawable.ic_filled_favorite);
+                }
+            });
 
         return view;
     }

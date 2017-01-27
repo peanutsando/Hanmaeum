@@ -27,7 +27,6 @@ import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
 public class ShuttleFragment extends Fragment {
 
     private ArrayList<Shuttle> shuttleList;
-    private ImageView imageView;
     @BindView(R.id.shuttleTime)
     ListView shuttleTime;
 
