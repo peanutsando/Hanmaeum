@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
 
 /**
- * Created by user on 2017-01-14.
+ * Created by user on 2017-01-27.
  */
 
 public class NoticeListAdapter extends BaseAdapter {
@@ -31,25 +33,32 @@ public class NoticeListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         final Context context = viewGroup.getContext();
+        final ViewHolder holder;
 
         // "content_notice_item" 레이아웃을 inflate하여 view 참조 획득
         if(view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.activity_notice_item, viewGroup, false);
-        }
+            holder = new ViewHolder(view);
 
-        // 화면에 표시될 View(layout이 inflate 된)으로부터 위젯에 대한 참조 획득..
-        TextView numberTextView = (TextView) view.findViewById(R.id.item_number);
-        TextView titleTextView = (TextView) view.findViewById(R.id.item_noticeTitle);
-        TextView timestampTextView = (TextView) view.findViewById(R.id.item_timestamp);
+            view.setTag(holder);
+        } else {
+            holder = (ViewHolder) view.getTag();
+        }
 
         // Data Set(noticeItemList)에서 position에 위치한 데이터 참조 획득.
         NoticeItem noticeItem = noticeItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
+        holder.numberTextView.setText(noticeItem.getNumber());
+        holder.timestampTextView.setText(noticeItem.getTimestamp());
+        holder.titleTextView.setText(noticeItem.getTitle());
+
+/*
         numberTextView.setText(noticeItem.getNumber());
         titleTextView.setText(noticeItem.getTitle());
         timestampTextView.setText(noticeItem.getTimestamp());
+*/
 
         return view;
     }
@@ -79,5 +88,18 @@ public class NoticeListAdapter extends BaseAdapter {
         item.setUrl(url);
 
         noticeItemList.add(item);
+    }
+
+    class ViewHolder {
+        @BindView(R.id.item_number)
+        TextView numberTextView;
+
+        @BindView(R.id.item_noticeTitle)
+        TextView titleTextView;
+
+        @BindView(R.id.item_timestamp)
+        TextView timestampTextView;
+
+        ViewHolder(View view) { ButterKnife.bind(this, view); }
     }
 }

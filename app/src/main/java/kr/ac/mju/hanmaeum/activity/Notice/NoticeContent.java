@@ -6,6 +6,7 @@ import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.BaseActivity;
 import kr.ac.mju.hanmaeum.activity.SubActivity;
@@ -38,12 +40,13 @@ import kr.ac.mju.hanmaeum.utils.Constants;
 import android.support.v7.app.ActionBar;
 
 /**
- * Modified by Jinhyeon Park on 2017-01-25.
+ * Modified by Jinhyeon Park on 2017-01-27.
  */
 
 public class NoticeContent extends BaseActivity {
     private String url, title, timestamp, content = "";
-/*
+
+
     @BindView(R.id.contentTimestamp)
     TextView timestampView;
 
@@ -54,19 +57,20 @@ public class NoticeContent extends BaseActivity {
     TextView attachView;
 
     @BindView(R.id.content_Linear)
-    LinearLayout linearLayout;*/
+    LinearLayout linearLayout;
 
-    private TextView timestampView, titleView, attachView;
     private GetAttachFileTask getAttachFileTask;
     private GetContentTask getContentTask;
     private GetImageContentTask getImageContentTask;
     private ArrayList<String> imgList, attachList, attachUrlList;
-    private LinearLayout linearLayout;
+    private int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice_content);
+
+        ButterKnife.bind(this);
 
         Init();
         RegisterBasicInfo();
@@ -89,11 +93,6 @@ public class NoticeContent extends BaseActivity {
         imgList = new ArrayList<String>();
         attachList = new ArrayList<String>();
         attachUrlList = new ArrayList<String>();
-
-        timestampView = (TextView) findViewById(R.id.contentTimestamp);
-        titleView = (TextView) findViewById(R.id.contentTitle);
-        attachView = (TextView) findViewById(R.id.attachFile);
-        linearLayout = (LinearLayout) findViewById(R.id.content_Linear);
     }
 
     private void RegisterBasicInfo() {
@@ -116,9 +115,9 @@ public class NoticeContent extends BaseActivity {
                     for(Element attachFile : attachFiles) {
                         attachList.add(attachFile.parent().text());
                         attachUrlList.add(attachFile.parent().attr("href").toString());
-
                        // Log.e("TEST@@@@@@@@@@@@@@@@@@@@@", attachFile.parent().text());
                     }
+                    flag = 1;
                 } else {
                     attachList.add("첨부파일이 없습니다.");
                 }
@@ -134,8 +133,13 @@ public class NoticeContent extends BaseActivity {
         protected void onPostExecute(ArrayList<String> attList) {
             super.onPostExecute(attList);
 
-            for(int i=0; i < attList.size(); i++) {
-                attachView.setText(Html.fromHtml("<a href="+ attachUrlList.get(i) + ">" + attachView.getText() + attList.get(i).toString() + "<br /"));
+            if(flag == 1) {
+                for(int i=0; i < attList.size(); i++) {
+                    attachView.setText(Html.fromHtml("<a href="+ attachUrlList.get(i) + ">" + attachView.getText() + attList.get(i).toString() + "<br /"));
+                    attachView.setMovementMethod(LinkMovementMethod.getInstance()); // need this sentence to connect url function
+                }
+            } else {
+                attachView.setText(attList.get(0).toString());
             }
         }
     }
