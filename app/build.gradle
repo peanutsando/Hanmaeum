@@ -47,4 +47,11 @@ dependencies {
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'gun0912.ted:tedpermission:1.0.2'
     compile 'com.android.support:multidex:1.0.1'
+
+    // for FCM
+    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
 }
+
+apply plugin: 'com.google.gms.google-services'

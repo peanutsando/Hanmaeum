@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "350457263058",
+    "firebase_url": "https://hanmaeum-156908.firebaseio.com",
+    "project_id": "hanmaeum-156908",
+    "storage_bucket": "hanmaeum-156908.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350457263058:android:f21690772275776f",
+        "android_client_info": {
+          "package_name": "kr.ac.mju.hanmaeum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350457263058-erhils0a5kjlaenh89b9h2erce0iv423.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8wgERqLJIIVSptJ-at0UEI1y7gm09dtg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
