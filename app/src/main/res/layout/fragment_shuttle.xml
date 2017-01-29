@@ -11,22 +11,27 @@
         >
 
         <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/shuttle_rb1"
                 android:text="@string/weekday"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                />
 
             <RadioButton
+                android:id="@+id/shuttle_rb2"
                 android:text="@string/season"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <RadioButton
+                android:id="@+id/shuttle_rb3"
                 android:text="@string/vacation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
