@@ -19,23 +19,20 @@ public class Info {
     private ArrayList<Weather> weather;
     private Main main;
 
-    public class Clouds
-    {
+    public class Clouds {
         private String all;
 
-        public String getAll ()
-        {
+        public String getAll() {
             return all;
         }
 
-        public void setAll (String all)
-        {
+        public void setAll(String all) {
             this.all = all;
         }
 
     }
 
-    public class Sys{
+    public class Sys {
         private String message;
         private String sunset;
         private String sunrise;
@@ -72,5 +69,93 @@ public class Info {
         public void setSunset(String sunset) {
             this.sunset = sunset;
         }
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
+    }
+
+    public Clouds getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(Clouds clouds) {
+        this.clouds = clouds;
+    }
+
+    public String getCod() {
+        return cod;
+    }
+
+    public void setCod(String cod) {
+        this.cod = cod;
+    }
+
+    public Coord getCoord() {
+        return coord;
+    }
+
+    public void setCoord(Coord coord) {
+        this.coord = coord;
+    }
+
+    public String getDt() {
+        return dt;
+    }
+
+    public void setDt(String dt) {
+        this.dt = dt;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Main getMain() {
+        return main;
+    }
+
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Sys getSys() {
+        return sys;
+    }
+
+    public void setSys(Sys sys) {
+        this.sys = sys;
+    }
+
+    public ArrayList<Weather> getWeather() {
+        return weather;
+    }
+
+    public void setWeather(ArrayList<Weather> weather) {
+        this.weather = weather;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public void setWind(Wind wind) {
+        this.wind = wind;
     }
 }

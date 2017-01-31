@@ -14,6 +14,7 @@ import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.fragment.InterCityFragment;
 import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
 import kr.ac.mju.hanmaeum.fragment.SubwayFragment;
+import kr.ac.mju.hanmaeum.fragment.TerminalFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
 public class SubActivity extends AppCompatActivity {
@@ -52,7 +53,9 @@ public class SubActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.KOBUS) {
             title.setText(getString(R.string.kobus));
-
+            Fragment fragment = TerminalFragment.newInstance();
+            fragment.setArguments(savedInstanceState);
+            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.LOAD_SEARCH) {
             title.setText(getString(R.string.load_search));
 

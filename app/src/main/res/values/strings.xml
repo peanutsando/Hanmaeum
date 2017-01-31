@@ -55,7 +55,7 @@
 
     <!-- Splash -->
     <string name="splash_subject">한마음</string>
-    <string name="splash_department">명지대학교 컴퓨터공학과과</string>
+    <string name="splash_department">명지대학교 컴퓨터공학과</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -46,8 +46,7 @@ import retrofit2.Response;
  * Modified by Jinhyeon Park on 2017-01-21.
  */
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.noticeListview)
     ListView noticeListview;
@@ -62,19 +61,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private ArrayList<String> urlList;
     private int index = 0;
 
-    private Location location;
-    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startActivity(new Intent(this, SplashActivity.class));// show splash
-
-        buildGoogleApiClient();
-
-        if (googleApiClient != null) {
-            googleApiClient.connect();
-        }
 
         setContentView(R.layout.activity_main); // get a layout
         ButterKnife.bind(this);
@@ -114,53 +105,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         startActivityForResult(intent, Constants.ACTIVITY_REQUEST_CODE);
     }
 
-    @Override public void onConnected(Bundle bundle) {
-        try {
-            location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (location != null) {
-                Log.i("TAG", location.getLatitude() + " " + location.getLongitude());
-                getWeather(location.getLatitude(), location.getLongitude());
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    private void getWeather(double lat, double lon) {
-        final Call<Info> subwayArrivalInfo = WeatherService.subwayInfoApi().getWeatherInfo(lat, lon, Constants.WEATHER_KEY);
-        subwayArrivalInfo.enqueue(new Callback<Info>() {
-            @Override public void onResponse(Call<Info> call, Response<Info> response) {
-                if (response.isSuccessful()) {
-
-                } else {
-                    Toast.makeText(MainActivity.this, getString(R.string.not_success), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override public void onFailure(Call<Info> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(MainActivity.this, getString(R.string.on_Failure), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 
-    protected synchronized void buildGoogleApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
 
     // Change UI (add notices to ListView) using AsyncTask
     class GetNoticeTask extends AsyncTask<Void, Void, List<NoticeItem>> {

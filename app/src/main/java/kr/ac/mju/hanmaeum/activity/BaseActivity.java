@@ -10,7 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -19,17 +23,32 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
+import kr.ac.mju.hanmaeum.utils.object.weather.Info;
+import kr.ac.mju.hanmaeum.utils.service.WeatherService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BaseActivity extends AppCompatActivity
-        implements Drawer.OnDrawerItemClickListener {
+        implements Drawer.OnDrawerItemClickListener,  GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     private String TAG = getClass().getSimpleName();
 
     private View headerLayout;
     private Drawer drawer;
     private long currentPosition = 0;
+
+    public double temp = 0.0;
+    public String weather;
+    public String loc;
+
+    private Location location;
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,20 +113,25 @@ public class BaseActivity extends AppCompatActivity
     }
 
 
-
     // 네비게이션 드로워 세팅
     protected void setNavigationDrawer(Bundle args) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        buildGoogleApiClient();
+
+        if (googleApiClient != null) {
+            googleApiClient.connect();
+        }
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        View layout = getLayoutInflater().inflate(R.layout.title_header, null);
-        headerLayout = layout;
+        headerLayout = getLayoutInflater().inflate(R.layout.title_header, null);
+
 
         drawer = new DrawerBuilder().withActivity(this).withTranslucentNavigationBar(false).withToolbar(toolbar)
-                .withHeader(layout)
+                .withHeader(headerLayout)
                 .addDrawerItems(
                         new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.shuttle).withIdentifier(Constants.SHUTTLE_BUS),
                         new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.where_shuttle).withIdentifier(Constants.SHUTTLE_BUS),
@@ -120,5 +144,69 @@ public class BaseActivity extends AppCompatActivity
                 .withSavedInstance(args).withShowDrawerOnFirstLaunch(true)
                 .build();
     }
+
+    @Override public void onConnected(Bundle bundle) {
+        try {
+            location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            if (location != null) {
+                Log.i("TAG", location.getLatitude() + " " + location.getLongitude());
+                getWeather(location.getLatitude(), location.getLongitude());
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+
+    private void getWeather(double lat, double lon) {
+        final Call<Info> subwayArrivalInfo = WeatherService.subwayInfoApi().getWeatherInfo(lat, lon, Constants.WEATHER_KEY);
+        subwayArrivalInfo.enqueue(new Callback<Info>() {
+            @Override public void onResponse(Call<Info> call, Response<Info> response) {
+                if (response.isSuccessful()) {
+                    Info info = response.body();
+                    temp = (info.getMain().getTemp() - 273.15);
+                    weather = info.getWeather().get(0).getIcon();
+                    loc = info.getName();
+
+                    ImageView weatherImage = (ImageView) headerLayout.findViewById(R.id.weather);
+                    TextView degree = (TextView) headerLayout.findViewById(R.id.degree);
+                    TextView location = (TextView) headerLayout.findViewById(R.id.location);
+
+                    Glide.with(BaseActivity.this)
+                            .load(Constants.WEATHER_ICON + weather + ".png")
+                            .into(weatherImage);
+
+                    degree.setText(String.valueOf(temp));
+                    location.setText(loc);
+                } else {
+                    Toast.makeText(BaseActivity.this, getString(R.string.not_success), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override public void onFailure(Call<Info> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(BaseActivity.this, getString(R.string.on_Failure), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
 }

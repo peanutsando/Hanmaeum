@@ -10,7 +10,7 @@ public class Main {
     private String temp_max;
     private String sea_level;
     private String temp_min;
-    private String temp;
+    private double temp;
     private String grnd_level;
 
     public String getGrnd_level() {
@@ -45,11 +45,11 @@ public class Main {
         this.sea_level = sea_level;
     }
 
-    public String getTemp() {
+    public double getTemp() {
         return temp;
     }
 
-    public void setTemp(String temp) {
+    public void setTemp(double temp) {
         this.temp = temp;
     }
 
