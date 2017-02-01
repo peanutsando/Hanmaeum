@@ -25,14 +25,12 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:src="@drawable/ic_launcher"
                 android:id="@+id/weather"
                 android:layout_weight="3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:text="서울시"
                 android:id="@+id/location"
                 android:gravity="center"
                 android:layout_weight="3"
@@ -40,7 +38,6 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:text="-13도"
                 android:id="@+id/degree"
                 android:layout_weight="4"
                 android:gravity="center"

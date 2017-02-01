@@ -27,6 +27,7 @@
     <string name="shuttle_start_time">출발 시간</string>
     <string name="shuttle_ramp_time">진입로 시간</string>
     <string name="shuttle_favorite">즐겨찾기</string>
+    <string name="now_location">나의 현재 위치</string>
 
     <!-- Date String -->
     <string name="attach_tag">첨부파일 :</string>
@@ -57,6 +58,12 @@
     <string name="splash_subject">한마음</string>
     <string name="splash_department">명지대학교 컴퓨터공학과</string>
 
+    <!-- Weather -->
+    <string name="degree">도</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Google API Key-->
+    <string name="GOOGLE_API_KEY">AIzaSyBcprv_tL84aSNeTpj6h9gVokTt8CQme5U</string>
 </resources>

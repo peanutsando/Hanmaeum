@@ -1,6 +1,11 @@
 package kr.ac.mju.hanmaeum.utils;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+
 import kr.ac.mju.hanmaeum.R;
+import kr.ac.mju.hanmaeum.utils.object.shuttle.ShuttleLocation;
 
 /**
  * Modified by Jinhyeon Park on 2017-01-21.
@@ -10,21 +15,40 @@ public class Constants {
     // Navigation Drawer
     // 셔틀버스
     public static final int SHUTTLE_BUS = 1;
+    // 셔틀타는곳
+    public static final int SHUTTLE_LOCATION = 2;
     // 시외버스
-    public static final int INTERCITY_BUS = 2;
+    public static final int INTERCITY_BUS = 3;
     // 터미널버스
-    public static final int KOBUS = 3;
+    public static final int KOBUS = 4;
     // 길찾기
-    public static final int LOAD_SEARCH = 4;
-    // 택시
-    public static final int WITH_TAXI = 5;
+    public static final int LOAD_SEARCH = 5;
     // 지하철
     public static final int SUBWAY = 6;
-    // 검색기록
-    public static final int SEARCH_LOG = 7;
 
     // Fragment Key
     public static final String FRAGMENT_KEY = "fragment_key";
+
+    // Location Key
+    public static final String LOCATION_LAT_KEY = "location_lat_key";
+    public static final String LOCATION_LON_KEY = "location_lon_key";
+
+    // Shuttle Location LatLng
+    // 진입로
+    public static final ShuttleLocation[] RAMP_SHUTTLE_LOCATION_LIST = {
+            new ShuttleLocation(37.2242302,127.1873092),
+            new ShuttleLocation(37.2315896,127.1882488),
+            new ShuttleLocation(37.2358708,127.1889518),
+            new ShuttleLocation(37.2384788,127.1896083),
+            new ShuttleLocation(37.2341187,127.1884465),
+            new ShuttleLocation(37.2312716,127.1881022),
+            new ShuttleLocation(37.2221354,127.1885939),
+            new ShuttleLocation(37.2195511,127.1833236)
+    };
+    // 시내
+    public static final ShuttleLocation[] DOWNTOWN_SHUTTLE_LOCATION_LIST = {
+            new ShuttleLocation(37.2242302,127.1873092)
+    };
 
 
     /* URL */

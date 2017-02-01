@@ -44,6 +44,9 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+                   android:value="@string/GOOGLE_API_KEY"/>
     </application>
 
 </manifest>

@@ -1,8 +1,10 @@
 package kr.ac.mju.hanmaeum.activity;
 
+import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import butterknife.OnClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.fragment.InterCityFragment;
 import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
+import kr.ac.mju.hanmaeum.fragment.ShuttleLocationFragment;
 import kr.ac.mju.hanmaeum.fragment.SubwayFragment;
 import kr.ac.mju.hanmaeum.fragment.TerminalFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
@@ -46,6 +49,19 @@ public class SubActivity extends AppCompatActivity {
             Fragment fragment = ShuttleFragment.newInstance();
             fragment.setArguments(savedInstanceState);
             getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
+        } else if(index == Constants.SHUTTLE_LOCATION){
+            title.setText(getString(R.string.where_shuttle));
+
+            Double lat = getIntent().getExtras().getDouble(Constants.LOCATION_LAT_KEY);
+            Double lon = getIntent().getExtras().getDouble(Constants.LOCATION_LON_KEY);
+
+            Fragment fragment = ShuttleLocationFragment.newInstance();
+            Bundle bundle = new Bundle();
+            bundle.putDouble(Constants.LOCATION_LAT_KEY, lat);
+            bundle.putDouble(Constants.LOCATION_LON_KEY, lon);
+
+            fragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.INTERCITY_BUS) {
             title.setText(getString(R.string.intercity));
             Fragment fragment = InterCityFragment.newInstance();
@@ -64,8 +80,6 @@ public class SubActivity extends AppCompatActivity {
             Fragment fragment = SubwayFragment.newInstance();
             fragment.setArguments(savedInstanceState);
             getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
-        } else if (index == Constants.SEARCH_LOG) {
-
         }
     }
 

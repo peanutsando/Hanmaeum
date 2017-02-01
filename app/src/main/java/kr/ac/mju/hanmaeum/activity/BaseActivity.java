@@ -2,8 +2,6 @@ package kr.ac.mju.hanmaeum.activity;
 
 import android.location.Location;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +21,6 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.object.weather.Info;
@@ -34,8 +30,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BaseActivity extends AppCompatActivity
-        implements Drawer.OnDrawerItemClickListener,  GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        implements Drawer.OnDrawerItemClickListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private String TAG = getClass().getSimpleName();
 
@@ -74,6 +70,15 @@ public class BaseActivity extends AppCompatActivity
                     intent.putExtras(args);
                     startActivity(intent, args);
                     break;
+                case Constants.SHUTTLE_LOCATION:
+                    args.putInt(Constants.FRAGMENT_KEY, Constants.SHUTTLE_LOCATION);
+
+                    args.putDouble(Constants.LOCATION_LAT_KEY, location.getLatitude());
+                    args.putDouble(Constants.LOCATION_LON_KEY, location.getLongitude());
+
+                    intent.putExtras(args);
+                    startActivity(intent, args);
+                    break;
                 case Constants.INTERCITY_BUS:
                     args.putInt(Constants.FRAGMENT_KEY, Constants.INTERCITY_BUS);
                     intent.putExtras(args);
@@ -89,18 +94,8 @@ public class BaseActivity extends AppCompatActivity
                     intent.putExtras(args);
                     startActivity(intent, args);
                     break;
-                case Constants.WITH_TAXI:
-                    args.putInt(Constants.FRAGMENT_KEY, Constants.WITH_TAXI);
-                    intent.putExtras(args);
-                    startActivity(intent, args);
-                    break;
                 case Constants.SUBWAY:
                     args.putInt(Constants.FRAGMENT_KEY, Constants.SUBWAY);
-                    intent.putExtras(args);
-                    startActivity(intent, args);
-                    break;
-                case Constants.SEARCH_LOG:
-                    args.putInt(Constants.FRAGMENT_KEY, Constants.SEARCH_LOG);
                     intent.putExtras(args);
                     startActivity(intent, args);
                     break;
@@ -134,7 +129,7 @@ public class BaseActivity extends AppCompatActivity
                 .withHeader(headerLayout)
                 .addDrawerItems(
                         new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.shuttle).withIdentifier(Constants.SHUTTLE_BUS),
-                        new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.where_shuttle).withIdentifier(Constants.SHUTTLE_BUS),
+                        new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.where_shuttle).withIdentifier(Constants.SHUTTLE_LOCATION),
                         new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.intercity).withIdentifier(Constants.INTERCITY_BUS),
                         new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_bus).withName(R.string.kobus).withIdentifier(Constants.KOBUS),
                         new SecondaryDrawerItem().withIcon(R.drawable.ic_drawer_map).withName(R.string.load_search).withIdentifier(Constants.LOAD_SEARCH),
@@ -148,8 +143,8 @@ public class BaseActivity extends AppCompatActivity
     @Override public void onConnected(Bundle bundle) {
         try {
             location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
             if (location != null) {
-                Log.i("TAG", location.getLatitude() + " " + location.getLongitude());
                 getWeather(location.getLatitude(), location.getLongitude());
             }
         } catch (SecurityException e) {
@@ -159,11 +154,11 @@ public class BaseActivity extends AppCompatActivity
     }
 
     @Override public void onConnectionSuspended(int i) {
-
+        Log.i("OnConnectionSuspended", "" + i);
     }
 
-    @Override public void onConnectionFailed(ConnectionResult connectionResult) {
-
+    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i("OnConnectionFailed", "" + connectionResult);
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -193,7 +188,7 @@ public class BaseActivity extends AppCompatActivity
                             .load(Constants.WEATHER_ICON + weather + ".png")
                             .into(weatherImage);
 
-                    degree.setText(String.valueOf(temp));
+                    degree.setText(getRound(temp));
                     location.setText(loc);
                 } else {
                     Toast.makeText(BaseActivity.this, getString(R.string.not_success), Toast.LENGTH_SHORT).show();
@@ -207,6 +202,8 @@ public class BaseActivity extends AppCompatActivity
         });
     }
 
-
+    private String getRound(double a) {
+        return String.valueOf(Math.round(a * 10d) / 10d) + getString(R.string.degree);
+    }
 
 }
