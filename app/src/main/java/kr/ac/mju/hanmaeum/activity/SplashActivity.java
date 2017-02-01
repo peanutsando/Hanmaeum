@@ -1,5 +1,9 @@
 package kr.ac.mju.hanmaeum.activity;
 
+/**
+ * Created by Pongs92 on 2017-01-21.
+ */
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
