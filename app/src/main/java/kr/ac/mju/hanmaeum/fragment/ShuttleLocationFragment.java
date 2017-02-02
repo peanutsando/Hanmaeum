@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,7 +21,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.object.shuttle.ShuttleLocation;
@@ -31,6 +34,11 @@ public class ShuttleLocationFragment extends Fragment implements OnMapReadyCallb
     private double lon;
 
     private GoogleMap map;
+
+    @BindView(R.id.downtown)
+    TextView downtown;
+    @BindView(R.id.ramp)
+    TextView ramp;
 
     public ShuttleLocationFragment() {
         // Required empty public constructor
@@ -69,8 +77,6 @@ public class ShuttleLocationFragment extends Fragment implements OnMapReadyCallb
     @Override public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
         setMyMarker();
-
-        setRampMarker();
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 13));
     }
 
@@ -88,12 +94,33 @@ public class ShuttleLocationFragment extends Fragment implements OnMapReadyCallb
         map.addMarker(options);
     }
 
+    @OnClick({R.id.downtown, R.id.ramp})
+    public void setView(View view) {
+        map.clear();
+        setMyMarker();
+        if (view.getId() == R.id.downtown) {
+            setDowntownMarker();
+        }else if(view.getId() == R.id.ramp){
+            setRampMarker();
+        }
+    }
+
     private void setRampMarker() {
         for (int i = 0; i < Constants.RAMP_SHUTTLE_LOCATION_LIST.length; i++) {
             MarkerOptions options = new MarkerOptions();
             ShuttleLocation location = Constants.RAMP_SHUTTLE_LOCATION_LIST[i];
             options.position(new LatLng(location.getLat(), location.getLon()));
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus));
+            map.addMarker(options);
+        }
+    }
+
+    private void setDowntownMarker() {
+        for (int i = 0; i < Constants.DOWNTOWN_SHUTTLE_LOCATION_LIST.length; i++) {
+            MarkerOptions options = new MarkerOptions();
+            ShuttleLocation location = Constants.DOWNTOWN_SHUTTLE_LOCATION_LIST[i];
+            options.position(new LatLng(location.getLat(), location.getLon()));
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.sbus));
             map.addMarker(options);
         }
     }

@@ -2,18 +2,13 @@ package kr.ac.mju.hanmaeum.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.gun0912.tedpermission.PermissionListener;
@@ -30,17 +25,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.utils.Constants;
-import kr.ac.mju.hanmaeum.utils.object.weather.Info;
-import kr.ac.mju.hanmaeum.utils.service.WeatherService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import kr.ac.mju.hanmaeum.utils.PreferenceManager;
+import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
 
 /**
  * Modified by Jinhyeon Park on 2017-02-02.
@@ -78,6 +69,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
 
+        Log.i("TAG", "" + PreferenceManager.getDatabase(this));
+
+        if (!PreferenceManager.getDatabase(this)) {
+            BookmarkDatabase database = new BookmarkDatabase();
+            database.createDatabase(this);
+        }
+
 
         // get listView layout for notices and set Adapter to listView
         noticeListAdapter = new NoticeListAdapter();
@@ -105,8 +103,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         startActivityForResult(intent, Constants.ACTIVITY_REQUEST_CODE);
     }
-
-
 
 
     // Change UI (add notices to ListView) using AsyncTask

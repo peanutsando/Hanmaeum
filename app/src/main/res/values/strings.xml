@@ -20,6 +20,7 @@
     <string name="weekday">학기중</string>
     <string name="season">계절학기</string>
     <string name="downtownShuttle">시내셔틀</string>
+    <string name="ramp_shuttle">진입로셔틀</string>
     <string name="shuttleNotice">출발시각 및 진입로 경유시간은 도로교통상황에 따라 </string>
     <string name="shuttleNotice2">5~10분정도 지연될 수 있습니다.</string>
     <string name="shuttle_number">번호</string>
@@ -28,6 +29,8 @@
     <string name="shuttle_ramp_time">진입로 시간</string>
     <string name="shuttle_favorite">즐겨찾기</string>
     <string name="now_location">나의 현재 위치</string>
+    <string name="downtown_root">버스관리사무소 정류장(기점) → 이마트 앞 → 진입로 정류장→ 동부경찰서 중앙지구대 앞 → 롯데시네마 뚜레주르 앞 → 중앙공영주차장앞 → 진입로 → 이마트 앞 → 제1공학관 → 제3공학관</string>
+    <string name="ramp_root">버스관리사무소 정류장(기점) → 이마트 앞 → 진입로 정류장 → 경전철 명지대역(세브란스병원 정류장) → 진입로 정류장 →이마트 앞 → 명진당 → 제3공학관</string>
 
     <!-- Date String -->
     <string name="attach_tag">첨부파일 :</string>

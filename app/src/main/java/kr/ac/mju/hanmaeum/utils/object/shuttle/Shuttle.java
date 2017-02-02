@@ -10,21 +10,36 @@ public class Shuttle {
     private String start_time;
     // 진입로 경유 예정시각
     private String ramp_time;
+    private boolean bookmark;
 
-        public Shuttle(String no, String type, String start_time, String ramp_time) {
-            this.no = no;
-            this.ramp_time = ramp_time;
-            this.start_time = start_time;
-            this.type = type;
-        }
+    public Shuttle(String no, String type, String start_time, String ramp_time) {
+        this.no = no;
+        this.ramp_time = ramp_time;
+        this.start_time = start_time;
+        this.type = type;
+    }
 
-        @Override public String toString() {
-            return "Shuttle{" +
-                    "no='" + no + '\'' +
-                    ", type='" + type + '\'' +
+    public Shuttle(String no, boolean bookmark, String start_time) {
+        this.no = no;
+        this.bookmark = bookmark;
+        this.start_time = start_time;
+    }
+
+    @Override public String toString() {
+        return "Shuttle{" +
+                "no='" + no + '\'' +
+                ", type='" + type + '\'' +
                 ", start_time='" + start_time + '\'' +
                 ", ramp_time='" + ramp_time + '\'' +
                 '}';
+    }
+
+    public boolean isBookmark() {
+        return bookmark;
+    }
+
+    public void setBookmark(boolean bookmark) {
+        this.bookmark = bookmark;
     }
 
     public String getNo() {

@@ -23,8 +23,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
+import kr.ac.mju.hanmaeum.utils.PreferenceManager;
 import kr.ac.mju.hanmaeum.utils.object.shuttle.Shuttle;
 import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
+import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
 
 public class ShuttleFragment extends Fragment {
 
@@ -121,6 +123,13 @@ public class ShuttleFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<Shuttle> shuttles) {
+            if (!PreferenceManager.getShuttleDatabase(getActivity())) {
+                BookmarkDatabase database = new BookmarkDatabase();
+                for (Shuttle s : shuttles) {
+                    database.insertBookmark(s.getNo(), s.getStart_time(), false);
+                }
+                PreferenceManager.setShuttleDatabase(getActivity());
+            }
             setShuttleTime();
             super.onPostExecute(shuttleList);
         }
@@ -135,8 +144,7 @@ public class ShuttleFragment extends Fragment {
 
             if (v.getId() == R.id.shuttle_rb1) {
                 setShuttleTime();
-            }
-            else if (v.getId() == R.id.shuttle_rb2) {
+            } else if (v.getId() == R.id.shuttle_rb2) {
                 for (int i = 0; i < 65; i++) {
                     if (flag) break;
                     String[] _startTime = shuttleList.get(i).getStart_time().split(":");
@@ -145,8 +153,7 @@ public class ShuttleFragment extends Fragment {
                             checkShuttleList.add(shuttleList.get(j));
                         }
                         flag = true;
-                    }
-                    else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
+                    } else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
                         if (Integer.parseInt(_nowTime[1]) <= Integer.parseInt(_startTime[1])) {
                             for (int j = i; j < 65; j++) {
                                 checkShuttleList.add(shuttleList.get(j));
@@ -157,8 +164,7 @@ public class ShuttleFragment extends Fragment {
                 }
                 ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList);
                 shuttleTime.setAdapter(shuttleAdapter);
-            }
-            else if (v.getId() == R.id.shuttle_rb3) {
+            } else if (v.getId() == R.id.shuttle_rb3) {
                 for (int i = 75; i < 85; i++) {
                     if (flag) break;
                     String[] _startTime = shuttleList.get(i).getStart_time().split(":");
@@ -167,8 +173,7 @@ public class ShuttleFragment extends Fragment {
                             checkShuttleList.add(shuttleList.get(j));
                         }
                         flag = true;
-                    }
-                    else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
+                    } else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
                         if (Integer.parseInt(_nowTime[1]) <= Integer.parseInt(_startTime[1])) {
                             for (int j = i; j < 85; j++) {
                                 checkShuttleList.add(shuttleList.get(j));
@@ -195,8 +200,7 @@ public class ShuttleFragment extends Fragment {
                     checkShuttleList.add(shuttleList.get(j));
                 }
                 flag = true;
-            }
-            else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
+            } else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
                 if (Integer.parseInt(_nowTime[1]) <= Integer.parseInt(_startTime[1])) {
                     for (int j = i; j < 75; j++) {
                         checkShuttleList.add(shuttleList.get(j));

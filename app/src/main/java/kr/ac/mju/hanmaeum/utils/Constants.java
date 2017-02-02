@@ -37,17 +37,27 @@ public class Constants {
     // 진입로
     public static final ShuttleLocation[] RAMP_SHUTTLE_LOCATION_LIST = {
             new ShuttleLocation(37.2242302,127.1873092),
-            new ShuttleLocation(37.2315896,127.1882488),
+            new ShuttleLocation(37.231699, 127.188480),
             new ShuttleLocation(37.2358708,127.1889518),
             new ShuttleLocation(37.2384788,127.1896083),
             new ShuttleLocation(37.2341187,127.1884465),
-            new ShuttleLocation(37.2312716,127.1881022),
+            new ShuttleLocation(37.231447, 127.188081),
             new ShuttleLocation(37.2221354,127.1885939),
             new ShuttleLocation(37.2195511,127.1833236)
     };
     // 시내
     public static final ShuttleLocation[] DOWNTOWN_SHUTTLE_LOCATION_LIST = {
-            new ShuttleLocation(37.2242302,127.1873092)
+            new ShuttleLocation(37.2242302,127.1873092),
+            new ShuttleLocation(37.231699, 127.188480),
+            new ShuttleLocation(37.2358708,127.1889518),
+            new ShuttleLocation(37.234705, 127.198204),
+            new ShuttleLocation(37.234988, 127.204369),
+            new ShuttleLocation(37.233378, 127.208933),
+            new ShuttleLocation(37.2341187,127.1884465),
+            new ShuttleLocation(37.231447, 127.188081),
+            new ShuttleLocation(37.2221354,127.1885939),
+            new ShuttleLocation(37.222658, 127.186624),
+            new ShuttleLocation(37.2195511,127.1833236)
     };
 
 
@@ -125,4 +135,27 @@ public class Constants {
     public static final String WEATHER_KEY = "21d42754e1e68e44f1282daac7b1576f";
     public static final String WEATHER_URL = "http://api.openweathermap.org/";
     public static final String WEATHER_ICON = "http://openweathermap.org/img/w/";
+
+    /* Preference */
+    public static final String DATABASE_CREATED_PREF = "created_db";
+    public static final String DATABASE_INIT_PREF = "created_db";
+
+    /* Database */
+    public static final String BOOKMARK_DATABASE = "bookmark_db";
+
+    /* Table */
+    public static final String BOOKMARK_TABLE = "bookmark_table";
+
+    /* Table Column */
+    public static final String TABLE_COL_ID = "_id";
+    public static final String TABLE_COL_TIME = "time";
+    public static final String TABLE_COL_BOOKMARK = "bookmark";
+
+    /* Query */
+    public static final String CREATE_TABLE_QUERY = "create table if not exists "
+            + BOOKMARK_TABLE + "("
+            + TABLE_COL_ID + " varchar, "
+            + TABLE_COL_TIME + " varchar, "
+            + TABLE_COL_BOOKMARK + " boolean "
+            + ");";
 }
