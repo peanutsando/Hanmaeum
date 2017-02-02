@@ -43,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Modified by Jinhyeon Park on 2017-01-21.
+ * Modified by Jinhyeon Park on 2017-02-02.
  */
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
@@ -90,7 +90,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         // Register eventListener of listView for click event
         noticeListview.setOnItemClickListener(this);
 
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        //추가한 라인
+        FirebaseMessaging.getInstance().subscribeToTopic("notice");
         FirebaseInstanceId.getInstance().getToken();
     }
 

@@ -30,16 +30,14 @@
         <activity android:name=".activity.BaseActivity"></activity>
         <activity android:name=".activity.SubActivity"></activity>
         <activity android:name=".activity.notice.NoticeContent"></activity>
-        >
-        <service
-            android:name=".utils.service.FirebaseMessagingService">
+
+        <service android:name=".utils.service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <service
-            android:name=".utils.service.FirebaseInstanceIDService">
+        <service android:name=".utils.service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
