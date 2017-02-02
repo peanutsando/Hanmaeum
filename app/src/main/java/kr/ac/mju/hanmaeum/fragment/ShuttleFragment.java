@@ -3,6 +3,7 @@ package kr.ac.mju.hanmaeum.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
 public class ShuttleFragment extends Fragment {
 
     private ArrayList<Shuttle> shuttleList;
+    private ArrayList<Shuttle> bookmark;
     @BindView(R.id.shuttleTime)
     ListView shuttleTime;
     public RadioButton rb1;
@@ -72,6 +74,7 @@ public class ShuttleFragment extends Fragment {
         rb3 = (RadioButton) view.findViewById(R.id.shuttle_rb3);
 
         shuttleList = new ArrayList<Shuttle>();
+        bookmark = new ArrayList<>();
         GetShuttleTime getShuttleTime = new GetShuttleTime();
         getShuttleTime.execute();
 
@@ -123,14 +126,8 @@ public class ShuttleFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<Shuttle> shuttles) {
-            if (!PreferenceManager.getShuttleDatabase(getActivity())) {
-                BookmarkDatabase database = new BookmarkDatabase();
-                for (Shuttle s : shuttles) {
-                    database.insertBookmark(s.getNo(), s.getStart_time(), false);
-                }
-                PreferenceManager.setShuttleDatabase(getActivity());
-            }
             setShuttleTime();
+            setDatabase();
             super.onPostExecute(shuttleList);
         }
     }
@@ -162,7 +159,7 @@ public class ShuttleFragment extends Fragment {
                         }
                     }
                 }
-                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList);
+                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark);
                 shuttleTime.setAdapter(shuttleAdapter);
             } else if (v.getId() == R.id.shuttle_rb3) {
                 for (int i = 75; i < 85; i++) {
@@ -182,7 +179,7 @@ public class ShuttleFragment extends Fragment {
                         }
                     }
                 }
-                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList);
+                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark);
                 shuttleTime.setAdapter(shuttleAdapter);
             }
         }
@@ -209,8 +206,11 @@ public class ShuttleFragment extends Fragment {
                 }
             }
         }
-        ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList);
+        setBookmark();
+        ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark);
         shuttleTime.setAdapter(shuttleAdapter);
+
+        shuttleAdapter.notifyDataSetChanged();
     }
 
 
@@ -220,6 +220,25 @@ public class ShuttleFragment extends Fragment {
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    private void setBookmark() {
+        BookmarkDatabase database = new BookmarkDatabase();
+        bookmark = database.getBookmarkCheck(getActivity());
+
+        for (int i = 0; i < bookmark.size(); i++) {
+            Shuttle s = bookmark.get(i);
+        }
+    }
+
+    private void setDatabase(){
+        if (!PreferenceManager.getShuttleDatabase(getActivity())) {
+            BookmarkDatabase database = new BookmarkDatabase();
+            for (Shuttle s : shuttleList) {
+                database.insertBookmark(getActivity(), s.getNo(), s.getStart_time(), false);
+            }
+            PreferenceManager.setShuttleDatabase(getActivity());
         }
     }
 }

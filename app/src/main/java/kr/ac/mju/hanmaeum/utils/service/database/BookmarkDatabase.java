@@ -71,6 +71,7 @@ public class BookmarkDatabase {
                 bookmarkCheck.add(new Shuttle(cursor.getString(cursor.getColumnIndex(databaseTableCol[0]))
                         , true, cursor.getString(cursor.getColumnIndex(databaseTableCol[2]))));
             }
+            cursor.close();
         }
 
         return bookmarkCheck;
@@ -80,14 +81,16 @@ public class BookmarkDatabase {
      * Bookmark Insert Query
      * If you clicked on the bookmark image when it is false, it is a syntax to proceed
      */
-    public void insertBookmark(String id, String time, boolean flag) {
-        ContentValues values = new ContentValues();
+    public void insertBookmark(Context context, String id, String time, boolean flag) {
+        if (openDatabase(context)) {
+            ContentValues values = new ContentValues();
 
-        values.put(Constants.TABLE_COL_ID, id);
-        values.put(Constants.TABLE_COL_TIME, time);
-        values.put(Constants.TABLE_COL_BOOKMARK, flag);
+            values.put(Constants.TABLE_COL_ID, id);
+            values.put(Constants.TABLE_COL_TIME, time);
+            values.put(Constants.TABLE_COL_BOOKMARK, flag);
 
-        database.insert(Constants.BOOKMARK_TABLE, null, values);
+            database.insert(Constants.BOOKMARK_TABLE, null, values);
+        }
     }
 
     private boolean openDatabase(Context context) {

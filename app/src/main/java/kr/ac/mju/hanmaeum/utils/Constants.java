@@ -138,7 +138,7 @@ public class Constants {
 
     /* Preference */
     public static final String DATABASE_CREATED_PREF = "created_db";
-    public static final String DATABASE_INIT_PREF = "created_db";
+    public static final String DATABASE_INIT_PREF = "init_db";
 
     /* Database */
     public static final String BOOKMARK_DATABASE = "bookmark_db";

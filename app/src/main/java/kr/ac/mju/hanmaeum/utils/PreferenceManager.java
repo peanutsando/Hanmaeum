@@ -35,7 +35,7 @@ public class PreferenceManager {
     }
 
     public static boolean getShuttleDatabase(Context context){
-        pref = context.getSharedPreferences(Constants.DATABASE_CREATED_PREF, context.MODE_PRIVATE);
+        pref = context.getSharedPreferences(Constants.DATABASE_INIT_PREF, context.MODE_PRIVATE);
         return pref.getBoolean(Constants.DATABASE_INIT_PREF, false);
     }
 }
