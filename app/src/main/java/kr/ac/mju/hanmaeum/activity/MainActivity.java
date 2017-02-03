@@ -2,13 +2,20 @@ package kr.ac.mju.hanmaeum.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.gun0912.tedpermission.PermissionListener;
@@ -25,13 +32,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.utils.Constants;
-import kr.ac.mju.hanmaeum.utils.PreferenceManager;
-import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
+import kr.ac.mju.hanmaeum.utils.object.weather.Info;
+import kr.ac.mju.hanmaeum.utils.service.WeatherService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Modified by Jinhyeon Park on 2017-02-02.
@@ -69,13 +80,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
 
-        Log.i("TAG", "" + PreferenceManager.getDatabase(this));
-
-        if (!PreferenceManager.getDatabase(this)) {
-            BookmarkDatabase database = new BookmarkDatabase();
-            database.createDatabase(this);
-        }
-
 
         // get listView layout for notices and set Adapter to listView
         noticeListAdapter = new NoticeListAdapter();
@@ -105,10 +109,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     }
 
 
+
+
     // Change UI (add notices to ListView) using AsyncTask
-    class GetNoticeTask extends AsyncTask<Void, Void, List<NoticeItem>> {
+    class GetNoticeTask extends AsyncTask<Void, Void, String> {
         @Override
-        protected List<NoticeItem> doInBackground(Void... voids) {
+        protected String doInBackground(Void... voids) {
             try {
                 // connect url
                 Document doc = Jsoup.connect(Constants.NOTICE_URL).get();
@@ -165,14 +171,20 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return number.get(number.size()-1);
         }
 
 
         @Override
-        protected void onPostExecute(List<NoticeItem> noticeItems) {
-            super.onPostExecute(noticeItems);
+        protected void onPostExecute(String number) {
+            super.onPostExecute(number);
             noticeListAdapter.notifyDataSetChanged();
+
+            // declaration
+            SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = mPref.edit();
+            editor.putString("number", number);
+            editor.commit();
         }
     }
 
