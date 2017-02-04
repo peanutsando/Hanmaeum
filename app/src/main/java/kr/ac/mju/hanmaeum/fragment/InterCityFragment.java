@@ -1,21 +1,54 @@
 package kr.ac.mju.hanmaeum.fragment;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import kr.ac.mju.hanmaeum.R;
+import kr.ac.mju.hanmaeum.utils.Constants;
+import kr.ac.mju.hanmaeum.utils.adapter.InterCityAdapter;
+import kr.ac.mju.hanmaeum.utils.object.InterCity.BusInfomation;
+import kr.ac.mju.hanmaeum.utils.object.InterCity.Page;
+import kr.ac.mju.hanmaeum.utils.service.InterCityService;
+import okhttp3.ConnectionPool;
+import okhttp3.Dispatcher;
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Converter;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public class InterCityFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -26,6 +59,17 @@ public class InterCityFragment extends Fragment {
 
     @BindView(R.id.search_text)
     EditText search_text;
+
+    @BindView(R.id.busInfo)
+    ListView busInfo;
+
+    @BindView(R.id.search_data)
+    TextView search_data;
+
+    private String searchBus;
+    private List<BusInfomation> bus;
+
+    private boolean flag = false;
 
     public InterCityFragment() {
         // Required empty public constructor
@@ -56,10 +100,11 @@ public class InterCityFragment extends Fragment {
 
     @OnClick(R.id.search)
     public void setSearch() {
-        int length = search_text.getText().length();
+        searchBus = search_text.getText().toString();
+        int length = searchBus.length();
 
-        Log.i("TAG", search_text.getText() + " " + length);
         SweetAlertDialog alertDialog;
+
 
         if (length == 0) {
             alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
@@ -67,10 +112,68 @@ public class InterCityFragment extends Fragment {
 
             alertDialog.show();
         } else {
-            alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+            /*alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
             alertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
             alertDialog.setTitleText(getString(R.string.loading));
             alertDialog.show();
+*/
+            bus = new ArrayList<BusInfomation>();
+            GetBusInfo getBusInfo = new GetBusInfo();
+            getBusInfo.execute();
+        }
+    }
+
+    private void setBusInfos() {
+        InterCityAdapter adapter = new InterCityAdapter(getActivity(), bus);
+        busInfo.setAdapter(adapter);
+    }
+
+    class GetBusInfo extends AsyncTask<Void, Void, List<BusInfomation>> {
+        @Override protected List<BusInfomation> doInBackground(Void... voids) {
+            try {
+                String url = Constants.INTERCITY_INFO_URL + searchBus + ",0";
+                Document doc = Jsoup.connect(url).get();
+
+                List<String> infoName = new ArrayList<String>();
+                List<String> valueName = new ArrayList<String>();
+
+                Elements nameElements = doc.select("th");
+
+                for (Element e : nameElements) {
+                    infoName.add(e.text());
+                }
+
+                Elements valueElements = doc.select("td");
+
+                for (Element e : valueElements) {
+                    valueName.add(e.text());
+                    Log.i("TAG0", e.text());
+                }
+
+                int count = 0;
+                if (!valueName.get(1).equals(getString(R.string.search_data_null))) {
+                    for (int i = 2; i < 7; i++) {
+                        bus.add(new BusInfomation(infoName.get(i - 1), valueName.get(i)));
+                        Log.i("TAG", bus.get(count).toString());
+                        count++;
+                    }
+                    flag = true;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override protected void onPostExecute(List<BusInfomation> busInfomations) {
+            if (flag) {
+                search_data.setText("");
+                setBusInfos();
+            } else {
+                search_data.setText(getString(R.string.search_data_null));
+            }
+            super.onPostExecute(busInfomations);
         }
     }
 

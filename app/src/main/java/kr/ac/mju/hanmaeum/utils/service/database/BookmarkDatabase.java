@@ -38,18 +38,19 @@ public class BookmarkDatabase {
     /**
      * Bookmark Update Query
      * If you clicked on the bookmark image, it is a syntax to proceed
-     *
      * @param key  : bus index
      * @param flag : bookmark check
      */
     public void setBookmarkCheck(Context context, String key, boolean flag) {
         ContentValues values = new ContentValues();
+        Log.i("TAG101", key + " " + flag);
         if (openDatabase(context)) {
             if (flag) {
                 values.put(Constants.TABLE_COL_BOOKMARK, true);
             } else {
                 values.put(Constants.TABLE_COL_BOOKMARK, false);
             }
+            Log.i("TAG100", values.toString());
             database.update(Constants.BOOKMARK_TABLE, values, Constants.TABLE_COL_ID + " = ? ", new String[]{key});
         }
     }
@@ -68,8 +69,10 @@ public class BookmarkDatabase {
             );
 
             while (cursor.moveToNext()) {
+                boolean value = cursor.getInt(cursor.getColumnIndex(databaseTableCol[2])) > 0;
                 bookmarkCheck.add(new Shuttle(cursor.getString(cursor.getColumnIndex(databaseTableCol[0]))
-                        , true, cursor.getString(cursor.getColumnIndex(databaseTableCol[2]))));
+                        , value,
+                        cursor.getString(cursor.getColumnIndex(databaseTableCol[1]))));
             }
             cursor.close();
         }
@@ -82,18 +85,16 @@ public class BookmarkDatabase {
      * If you clicked on the bookmark image when it is false, it is a syntax to proceed
      */
     public void insertBookmark(Context context, String id, String time, boolean flag) {
-        if (openDatabase(context)) {
-            ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();
 
-            values.put(Constants.TABLE_COL_ID, id);
-            values.put(Constants.TABLE_COL_TIME, time);
-            values.put(Constants.TABLE_COL_BOOKMARK, flag);
+        values.put(Constants.TABLE_COL_ID, id);
+        values.put(Constants.TABLE_COL_TIME, time);
+        values.put(Constants.TABLE_COL_BOOKMARK, flag);
 
-            database.insert(Constants.BOOKMARK_TABLE, null, values);
-        }
+        database.insert(Constants.BOOKMARK_TABLE, null, values);
     }
 
-    private boolean openDatabase(Context context) {
+    public boolean openDatabase(Context context) {
         DatabaseHelper helper = new DatabaseHelper(context);
         database = helper.getWritableDatabase();
         return true;

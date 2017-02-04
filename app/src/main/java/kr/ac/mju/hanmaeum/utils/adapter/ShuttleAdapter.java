@@ -91,9 +91,11 @@ public class ShuttleAdapter extends BaseAdapter {
             public void onClick(View v) {
                 // if existing data exists, there is a value in the Database
                 if (book.isBookmark()) {
+                    Log.i("TAG", "이제 클릭해제");
                     database.setBookmarkCheck(context, shuttle.getNo(), false);
                     holder.bookmark.setImageResource(R.drawable.ic_empty_favorite);
                 } else {
+                    Log.i("TAG", "이제 클릭한거");
                     database.setBookmarkCheck(context, shuttle.getNo(), true);
                     holder.bookmark.setImageResource(R.drawable.ic_filled_favorite);
                 }

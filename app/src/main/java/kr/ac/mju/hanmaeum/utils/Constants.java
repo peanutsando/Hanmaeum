@@ -112,6 +112,7 @@ public class Constants {
     public static final String[] SUBWAY_LINE_KEY = {
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "I", "K", "B", "A", "G", "S", "SU"
     };
+
     public static final int[] SUBWAY_LIEN_IMAGE = {
             R.drawable.line1,
             R.drawable.line2,
@@ -130,6 +131,16 @@ public class Constants {
             R.drawable.line_sin,
             R.drawable.line_su,
     };
+
+    /* InterCity */
+    public static final String INTERCITY_INFO_URL = "http://bus.go.kr/searchResult6.jsp?searchName=7,";
+    public static final String _5000 = "5000";
+    public static final String _5001 = "5001";
+    public static final String _5001_1 = "5001_1";
+    public static final String _5003 = "5003";
+    public static final String _5002 = "5002";
+    public static final String _5600 = "5600";
+    public static final String _5700 = "5700";
 
     /* Info */
     public static final String WEATHER_KEY = "21d42754e1e68e44f1282daac7b1576f";

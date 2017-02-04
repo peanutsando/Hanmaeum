@@ -1,5 +1,7 @@
 package kr.ac.mju.hanmaeum.fragment;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ import kr.ac.mju.hanmaeum.utils.PreferenceManager;
 import kr.ac.mju.hanmaeum.utils.object.shuttle.Shuttle;
 import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
 import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
+import kr.ac.mju.hanmaeum.utils.service.database.DatabaseHelper;
 
 public class ShuttleFragment extends Fragment {
 
@@ -73,7 +77,7 @@ public class ShuttleFragment extends Fragment {
         rb2 = (RadioButton) view.findViewById(R.id.shuttle_rb2);
         rb3 = (RadioButton) view.findViewById(R.id.shuttle_rb3);
 
-        shuttleList = new ArrayList<Shuttle>();
+        shuttleList = new ArrayList<>();
         bookmark = new ArrayList<>();
         GetShuttleTime getShuttleTime = new GetShuttleTime();
         getShuttleTime.execute();
@@ -126,8 +130,8 @@ public class ShuttleFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<Shuttle> shuttles) {
-            setShuttleTime();
             setDatabase();
+            setShuttleTime();
             super.onPostExecute(shuttleList);
         }
     }
@@ -224,20 +228,38 @@ public class ShuttleFragment extends Fragment {
     }
 
     private void setBookmark() {
-        BookmarkDatabase database = new BookmarkDatabase();
-        bookmark = database.getBookmarkCheck(getActivity());
-
-        for (int i = 0; i < bookmark.size(); i++) {
-            Shuttle s = bookmark.get(i);
+        if (PreferenceManager.getShuttleDatabase(getActivity())) {
+            BookmarkDatabase database = new BookmarkDatabase();
+            bookmark = database.getBookmarkCheck(getActivity());
         }
     }
 
-    private void setDatabase(){
+    private void setDatabase() {
         if (!PreferenceManager.getShuttleDatabase(getActivity())) {
+            DatabaseHelper helper = new DatabaseHelper(getActivity());
+            SQLiteDatabase db = helper.getWritableDatabase();
+
             BookmarkDatabase database = new BookmarkDatabase();
-            for (Shuttle s : shuttleList) {
-                database.insertBookmark(getActivity(), s.getNo(), s.getStart_time(), false);
+            if (database.openDatabase(getActivity())) {
+                for (Shuttle s : shuttleList) {
+                    ContentValues values = new ContentValues();
+
+                    values.put(Constants.TABLE_COL_ID, s.getNo());
+                    values.put(Constants.TABLE_COL_TIME, s.getStart_time());
+                    values.put(Constants.TABLE_COL_BOOKMARK, false);
+
+                    try {
+                        db.beginTransaction();
+                        db.insert(Constants.BOOKMARK_TABLE, null, values);
+                        db.setTransactionSuccessful();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        db.endTransaction();
+                    }
+                }
             }
+
             PreferenceManager.setShuttleDatabase(getActivity());
         }
     }
