@@ -40,7 +40,7 @@ import kr.ac.mju.hanmaeum.utils.Constants;
 import android.support.v7.app.ActionBar;
 
 /**
- * Modified by Jinhyeon Park on 2017-01-27.
+ * Modified by Jinhyeon Park on 2017-02-04
  */
 
 public class NoticeContent extends BaseActivity {
@@ -135,7 +135,7 @@ public class NoticeContent extends BaseActivity {
 
             if(flag == 1) {
                 for(int i=0; i < attList.size(); i++) {
-                    attachView.setText(Html.fromHtml("<a href="+ attachUrlList.get(i) + ">" + attachView.getText() + attList.get(i).toString() + "<br /"));
+                    attachView.setText(Html.fromHtml("<a href="+ "http://jw4.mju.ac.kr/" + attachUrlList.get(i) + ">" + attachView.getText() + attList.get(i).toString() + "<br /"));
                     attachView.setMovementMethod(LinkMovementMethod.getInstance()); // need this sentence to connect url function
                 }
             } else {
