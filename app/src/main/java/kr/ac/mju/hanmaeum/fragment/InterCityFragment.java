@@ -147,15 +147,11 @@ public class InterCityFragment extends Fragment {
 
                 for (Element e : valueElements) {
                     valueName.add(e.text());
-                    Log.i("TAG0", e.text());
                 }
 
-                int count = 0;
                 if (!valueName.get(1).equals(getString(R.string.search_data_null))) {
                     for (int i = 2; i < 7; i++) {
                         bus.add(new BusInfomation(infoName.get(i - 1), valueName.get(i)));
-                        Log.i("TAG", bus.get(count).toString());
-                        count++;
                     }
                     flag = true;
                 }

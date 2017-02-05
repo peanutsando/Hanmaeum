@@ -29,6 +29,9 @@ public class Constants {
     // Fragment Key
     public static final String FRAGMENT_KEY = "fragment_key";
 
+    // Shuttle Vacation Key
+    public static final int VACATION_KEY = 75;
+
     // Location Key
     public static final String LOCATION_LAT_KEY = "location_lat_key";
     public static final String LOCATION_LON_KEY = "location_lon_key";

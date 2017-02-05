@@ -39,6 +39,8 @@ public class ShuttleFragment extends Fragment {
     private ArrayList<Shuttle> bookmark;
     @BindView(R.id.shuttleTime)
     ListView shuttleTime;
+    private boolean checkSum = false;
+
     public RadioButton rb1;
     public RadioButton rb2;
     public RadioButton rb3;
@@ -103,15 +105,17 @@ public class ShuttleFragment extends Fragment {
 
                 Elements elements = doc.select(Constants.SHUTTLE_TABLE_ELEMENT);
 
+                int i = 0;
                 for (Element e : elements) {
                     String[] split = e.text().split(" ");
                     boolean flag = isNumber(split[0]);
 
                     if (flag) {
+                        i++;
                         if (split.length == 3) {
-                            shuttleList.add(new Shuttle(split[0], getString(R.string.downtownShuttle), split[1], split[2]));
+                            shuttleList.add(new Shuttle(String.valueOf(i), getString(R.string.downtownShuttle), split[1], split[2]));
                         } else {
-                            shuttleList.add(new Shuttle(split[0], split[1], split[2], split[3]));
+                            shuttleList.add(new Shuttle(String.valueOf(i), split[1], split[2], split[3]));
                         }
                     }
                 }
@@ -163,8 +167,10 @@ public class ShuttleFragment extends Fragment {
                         }
                     }
                 }
-                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark);
+
+                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark, checkSum);
                 shuttleTime.setAdapter(shuttleAdapter);
+
             } else if (v.getId() == R.id.shuttle_rb3) {
                 for (int i = 75; i < 85; i++) {
                     if (flag) break;
@@ -173,21 +179,34 @@ public class ShuttleFragment extends Fragment {
                         for (int j = i; j < 85; j++) {
                             checkShuttleList.add(shuttleList.get(j));
                         }
+                        checkSum = true;
                         flag = true;
                     } else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
                         if (Integer.parseInt(_nowTime[1]) <= Integer.parseInt(_startTime[1])) {
                             for (int j = i; j < 85; j++) {
                                 checkShuttleList.add(shuttleList.get(j));
                             }
+                            checkSum = true;
                             flag = true;
                         }
                     }
                 }
-                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark);
+
+                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, setBookmark(bookmark), checkSum);
                 shuttleTime.setAdapter(shuttleAdapter);
             }
         }
     };
+
+    private ArrayList<Shuttle> setBookmark(ArrayList<Shuttle> book) {
+        ArrayList<Shuttle> books = new ArrayList<>();
+        for (Shuttle s : book) {
+            if (Integer.parseInt(s.getNo()) > 75) {
+                books.add(s);
+            }
+        }
+        return books;
+    }
 
     private void setShuttleTime() {
         ArrayList<Shuttle> checkShuttleList = new ArrayList<>();
@@ -211,7 +230,7 @@ public class ShuttleFragment extends Fragment {
             }
         }
         setBookmark();
-        ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark);
+        ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark, checkSum);
         shuttleTime.setAdapter(shuttleAdapter);
 
         shuttleAdapter.notifyDataSetChanged();
@@ -240,11 +259,13 @@ public class ShuttleFragment extends Fragment {
             SQLiteDatabase db = helper.getWritableDatabase();
 
             BookmarkDatabase database = new BookmarkDatabase();
+            database.createDatabase(getActivity());
             if (database.openDatabase(getActivity())) {
+                int i = 1;
                 for (Shuttle s : shuttleList) {
                     ContentValues values = new ContentValues();
 
-                    values.put(Constants.TABLE_COL_ID, s.getNo());
+                    values.put(Constants.TABLE_COL_ID, i);
                     values.put(Constants.TABLE_COL_TIME, s.getStart_time());
                     values.put(Constants.TABLE_COL_BOOKMARK, false);
 
@@ -257,6 +278,7 @@ public class ShuttleFragment extends Fragment {
                     } finally {
                         db.endTransaction();
                     }
+                    i++;
                 }
             }
 

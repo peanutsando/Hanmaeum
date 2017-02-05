@@ -114,9 +114,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         startActivityForResult(intent, Constants.ACTIVITY_REQUEST_CODE);
     }
 
-
-
-
     // Change UI (add notices to ListView) using AsyncTask
     class GetNoticeTask extends AsyncTask<Void, Void, String> {
         @Override

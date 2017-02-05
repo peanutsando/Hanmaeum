@@ -5,21 +5,25 @@
               android:orientation="vertical">
 
     <LinearLayout
+        android:layout_marginTop="11dp"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <TextView
+                android:textSize="14dp"
                 android:id="@+id/barvIDt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:textSize="14dp"
                 android:id="@+id/arvCd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -27,28 +31,33 @@
 
         <TextView
             android:id="@+id/updnLine"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/trainLineNm"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/arvMsg2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/arvMsg3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"/>
 
 
         <TextView
             android:id="@+id/bstatnNm"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

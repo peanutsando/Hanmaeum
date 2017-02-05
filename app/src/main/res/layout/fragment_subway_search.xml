@@ -53,27 +53,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:id="@+id/start_point"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"/>
-
-                    <TextView
-                        android:id="@+id/fin_point"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -81,21 +60,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:textSize="18dp"
                         />
 
                     <TextView
                         android:id="@+id/shtStat"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:textSize="14dp"/>
 
                     <TextView
                         android:id="@+id/shtTrans"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_margin="7dp"/>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -105,18 +88,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:textSize="18dp"
                         />
 
                     <TextView
                         android:id="@+id/minStat"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:textSize="14dp"/>
 
                     <TextView
                         android:id="@+id/minTrans"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_margin="7dp"/>
 
                 </LinearLayout>
 

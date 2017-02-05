@@ -55,10 +55,6 @@ public class SubwayArrivalFragment extends Fragment {
 
         stationName.setText(title);
 
-        for(ArrivalInfo a : arrivalInfo){
-            Log.i("TAG", a.toString());
-        }
-
         SubwayArrivalAdapter adapter = new SubwayArrivalAdapter(getActivity(), arrivalInfo);
         arrivalList.setAdapter(adapter);
         return view;

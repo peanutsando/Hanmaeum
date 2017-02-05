@@ -38,19 +38,18 @@ public class BookmarkDatabase {
     /**
      * Bookmark Update Query
      * If you clicked on the bookmark image, it is a syntax to proceed
+     *
      * @param key  : bus index
      * @param flag : bookmark check
      */
     public void setBookmarkCheck(Context context, String key, boolean flag) {
         ContentValues values = new ContentValues();
-        Log.i("TAG101", key + " " + flag);
         if (openDatabase(context)) {
             if (flag) {
                 values.put(Constants.TABLE_COL_BOOKMARK, true);
             } else {
                 values.put(Constants.TABLE_COL_BOOKMARK, false);
             }
-            Log.i("TAG100", values.toString());
             database.update(Constants.BOOKMARK_TABLE, values, Constants.TABLE_COL_ID + " = ? ", new String[]{key});
         }
     }
@@ -65,7 +64,7 @@ public class BookmarkDatabase {
             Cursor cursor = database.query(
                     true, Constants.BOOKMARK_TABLE
                     , databaseTableCol, null, null,
-                    null, null, Constants.TABLE_COL_ID, null
+                    null, null, null, null
             );
 
             while (cursor.moveToNext()) {
