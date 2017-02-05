@@ -36,28 +36,28 @@ public class Constants {
     // Shuttle Location LatLng
     // 진입로
     public static final ShuttleLocation[] RAMP_SHUTTLE_LOCATION_LIST = {
-            new ShuttleLocation(37.2242302,127.1873092),
+            new ShuttleLocation(37.2242302, 127.1873092),
             new ShuttleLocation(37.231699, 127.188480),
-            new ShuttleLocation(37.2358708,127.1889518),
-            new ShuttleLocation(37.2384788,127.1896083),
-            new ShuttleLocation(37.2341187,127.1884465),
+            new ShuttleLocation(37.2358708, 127.1889518),
+            new ShuttleLocation(37.2384788, 127.1896083),
+            new ShuttleLocation(37.2341187, 127.1884465),
             new ShuttleLocation(37.231447, 127.188081),
-            new ShuttleLocation(37.2221354,127.1885939),
-            new ShuttleLocation(37.2195511,127.1833236)
+            new ShuttleLocation(37.2221354, 127.1885939),
+            new ShuttleLocation(37.2195511, 127.1833236)
     };
     // 시내
     public static final ShuttleLocation[] DOWNTOWN_SHUTTLE_LOCATION_LIST = {
-            new ShuttleLocation(37.2242302,127.1873092),
+            new ShuttleLocation(37.2242302, 127.1873092),
             new ShuttleLocation(37.231699, 127.188480),
-            new ShuttleLocation(37.2358708,127.1889518),
+            new ShuttleLocation(37.2358708, 127.1889518),
             new ShuttleLocation(37.234705, 127.198204),
             new ShuttleLocation(37.234988, 127.204369),
             new ShuttleLocation(37.233378, 127.208933),
-            new ShuttleLocation(37.2341187,127.1884465),
+            new ShuttleLocation(37.2341187, 127.1884465),
             new ShuttleLocation(37.231447, 127.188081),
-            new ShuttleLocation(37.2221354,127.1885939),
+            new ShuttleLocation(37.2221354, 127.1885939),
             new ShuttleLocation(37.222658, 127.186624),
-            new ShuttleLocation(37.2195511,127.1833236)
+            new ShuttleLocation(37.2195511, 127.1833236)
     };
 
 
@@ -132,15 +132,13 @@ public class Constants {
             R.drawable.line_su,
     };
 
+    /* Subway Search */
+    public static final String SUBWAY_SEARCH_INFO_URL = "http://swopenAPI.seoul.go.kr/api/subway/";
+    public static final String SUBWAY_SEARCH_INFO_KEY = "4d54417a657935753131384471734d6e";
+    public static final String SUBWAY_SEARCH_INFO_PARAMS = "/json/shortestRoute/";
+
     /* InterCity */
     public static final String INTERCITY_INFO_URL = "http://bus.go.kr/searchResult6.jsp?searchName=7,";
-    public static final String _5000 = "5000";
-    public static final String _5001 = "5001";
-    public static final String _5001_1 = "5001_1";
-    public static final String _5003 = "5003";
-    public static final String _5002 = "5002";
-    public static final String _5600 = "5600";
-    public static final String _5700 = "5700";
 
     /* Info */
     public static final String WEATHER_KEY = "21d42754e1e68e44f1282daac7b1576f";

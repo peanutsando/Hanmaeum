@@ -17,6 +17,7 @@ import kr.ac.mju.hanmaeum.fragment.InterCityFragment;
 import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
 import kr.ac.mju.hanmaeum.fragment.ShuttleLocationFragment;
 import kr.ac.mju.hanmaeum.fragment.SubwayFragment;
+import kr.ac.mju.hanmaeum.fragment.SubwaySearchFragment;
 import kr.ac.mju.hanmaeum.fragment.TerminalFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
 
@@ -74,7 +75,9 @@ public class SubActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         } else if (index == Constants.LOAD_SEARCH) {
             title.setText(getString(R.string.load_search));
-
+            Fragment fragment = SubwaySearchFragment.newInstance();
+            fragment.setArguments(savedInstanceState);
+            getSupportFragmentManager().beginTransaction().replace(R.id.sub_container, fragment).addToBackStack(null).commit();
         }  else if (index == Constants.SUBWAY) {
             title.setText(getString(R.string.subway));
             Fragment fragment = SubwayFragment.newInstance();

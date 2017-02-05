@@ -171,7 +171,7 @@ public class BaseActivity extends AppCompatActivity
 
 
     private void getWeather(double lat, double lon) {
-        final Call<Info> subwayArrivalInfo = WeatherService.subwayInfoApi().getWeatherInfo(lat, lon, Constants.WEATHER_KEY);
+        final Call<Info> subwayArrivalInfo = WeatherService.weatherInfoAPI().getWeatherInfo(lat, lon, Constants.WEATHER_KEY);
         subwayArrivalInfo.enqueue(new Callback<Info>() {
             @Override public void onResponse(Call<Info> call, Response<Info> response) {
                 if (response.isSuccessful()) {

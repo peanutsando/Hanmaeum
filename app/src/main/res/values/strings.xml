@@ -56,6 +56,14 @@
     <string name="perminute">분 남음</string>
     <string name="final_station">종착역 : </string>
 
+    <!-- Subway Search -->
+    <string name="start_text_null">출발역을 입력하세요.</string>
+    <string name="fin_text_null">도착역을 입력하세요.</string>
+    <string name="all_text_null">출발역과 도착역을 입력하세요.</string>
+    <string name="min_time">최소시간</string>
+    <string name="min_trans">최소환승</string>
+
+
     <!-- Alert -->
     <string name="not_success">네트워크가 응답하지않습니다.</string>
     <string name="on_Failure">불러오는데 실패하였습니다.</string>
