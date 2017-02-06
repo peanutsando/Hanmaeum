@@ -39,6 +39,7 @@ import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.object.weather.Info;
+import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
 import kr.ac.mju.hanmaeum.utils.service.WeatherService;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -85,7 +86,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 .setDeniedMessage("")
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
-
 
         // get listView layout for notices and set Adapter to listView
         noticeListAdapter = new NoticeListAdapter();
@@ -174,9 +174,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Log.d("NUMBER!!!!!!", number.get(number.size()-1));
+            Log.d("NUMBER!!!!!!", number.get(number.size() - 1));
 
-            return number.get(number.size()-1);
+            return number.get(number.size() - 1);
         }
 
 
@@ -190,7 +190,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             String callValue = mPref.getString("number", "-1");
 
             // if notice number does not exist, Save new number.
-            if(callValue.toString().equals("-1")) {
+            if (callValue.toString().equals("-1")) {
                 SharedPreferences.Editor editor = mPref.edit();
                 editor.putString("number", number);
                 editor.commit();
@@ -198,7 +198,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
             callValue = mPref.getString("number", "-1");
             // if notice number does exist and differ from the parameter number, change notice number to parameter number.
-            if(!callValue.toString().equals(number.toString())) {
+            if (!callValue.toString().equals(number.toString())) {
                 SharedPreferences.Editor editor = mPref.edit();
                 editor.remove("number");
                 editor.commit();
