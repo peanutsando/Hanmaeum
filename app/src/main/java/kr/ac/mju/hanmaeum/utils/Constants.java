@@ -170,4 +170,93 @@ public class Constants {
             + TABLE_COL_TIME + " varchar, "
             + TABLE_COL_BOOKMARK + " boolean "
             + ");";
+    public static final String[] seoulIntercity = {
+            "06:30","06:50","07:10","07:40","08:00","08:30","09:10","09:50","10:30","11:00","11:30","12:10","12:50","13:30","14:00","14:30","15:00",
+            "15:30","16:10","16:40","17:10","17:40","18:20","19:00","19:40","20:20","21:00","21:40","22:10"
+    } ;
+    public static final String[] gwangjuIntercity = {
+            "06:50","08:10","09:20","10:20","11:40","13:00","14:10","15:10","16:30","18:10","19:10","20:00"
+    };
+    public static final String[] changwonIntercity = {
+            "07:10","10:10","13:10","16:10","19:00"
+    };
+    public static final String[] busanIntercity = {
+            "07:00","08:30","10:00","11:30","13:00","14:30","16:00","17:30","18:40"
+    };
+    public static final String[] westBusanIntercity = {
+            "07:40","10:45","15:20","18:30"
+    };
+    public static final String[] ansanIntercity = {
+            "06:30","07:00","08:30","09:20","10:25","11:25","12:30","13:30","14:40","15:30","16:30","17:30","18:20","19:40","20:30","21:30"
+    };
+    public static final String[] jeonjuIntercit = {
+            "07:40","10:10","11:15","12:30","13:45","15:10","16:15","17:30","18:45"
+    };
+    public static final String[] youngwolTaebakIntercity = {
+            "07:00","15:00"
+    };
+    public static final String[] dongDaeguIntercity = {
+            "07:40","09:10","10:40","12:10","13:40","15:10","16:40","18:10","19:40"
+    };
+    public static final String[] wonjuIntercity = {
+            "06:50","07:40","08:20","10:30","12:10","14:30","16:10","18:10","19:00","19:50","20:40"
+    };
+    public static final String[] gyeongjuPohangIntercity = {
+            "08:00","10:05","15:00"
+    };
+    public static final String[] icheonYeojuIntercity = {
+            "09:20","12:50","16:20","19:50"
+    };
+    public static final String[] chungjuJeomchonSangjuIntercity = {
+            "08:30","15:40","19:30"
+    };
+    public static final String[] sokchoIntercity = {
+            "08:10","13:10","18:10"
+    };
+    public static final String[] gwangmyeongIntercity = {
+            "06:00","11:25","17:30"
+    };
+    public static final String[] gunsanIntercity = {
+            "06:40","08:05","10:45","12:05","14:45","16:05","18:50","20:05"
+    };
+    public static final String[] jinjuIntercity = {
+            "07:00","08:30","10:30","12:30","14:00","16:10","18:00","19:20"
+    };
+    public static final String[] gimhaeIntercity = {
+            "08:10","11:30","14:50","18:20"
+    };
+    public static final String[] gimpoAirportIntercity = {
+            "05:20","06:00","06:35","07:20","08:10","09:10","10:10","10:55","11:50","12:40","13:25","14:20","15:10","15:50","16:40","17:35","18:15","18:55","19:40","20:30"
+    };
+    public static final String[] incheonAirportIntercity = {
+            "04:15","04:25","04:55","05:10","05:25","05:40","05:55","06:10","06:25","06:40","06:55","07:15","07:40","08:00","08:20","08:40","09:00","09:20","09:20","09:40",
+            "10:00","10:25","10:45","11:10","11:30","11:45","12:10","12:30","12:50","13:10","13:30","13:50","14:10","14:25","14:40","15:00","15:20","15:40","16:00","16:20",
+            "16:35","17:00","17:20","17:40","18:00","18:20","18:50","19:20","19:50","20:25","21:00"
+    };
+    public static final String[] incheonIntercity = {
+            "06:20","06:50","07:10","08:00","08:40","09:00","09:25","09:50","10:15","10:35","10:50","11:05","11:20","11:35","11:50","12:05","12:20","12:45","13:10","13:35",
+            "14:00","14:25","14:45","15:05","15:25","15:40","15:55","16:10","16:30","16:45","17:05","17:25","17:50","18:15","18:40","19:25","19:45","20:05","20:20","20:35",
+            "20:50","21:05","21:20","21:35","21:50","22:00"
+    };
+    public static final String[] daejeonIntercity = {
+            "06:30","07:25","08:35","09:30","10:30","11:30","12:25","13:30","14:35","15:30","16:30","17:25","18:30","19:20","20:20"
+    };
+    public static final String[] cheonanIntercity = {
+            "06:20","06:40","07:20","07:40","09:25","10:20","11:30","12:45","13:40","14:30","15:20","16:10","17:00","17:50","18:35","19:30","20:10"
+    };
+    public static final String[] cheongjuIntercity = {
+            "07:30","09:10","11:20","13:10","14:30","16:10","18:00","19:10"
+    };
+    public static final String[] sejongYuseongIntercity = {
+            "06:00","12:00","18:00"
+    };
+    public static final String[] gumiUlsanIntercity = {
+            "08:40","11:40","14:40","18:00"
+    };
+    public static final String[] gangneungIntercity = {
+            "07:30","09:00","11:30","13:40","16:00"
+    };
+    public static final String[] goyangIntercity = {
+            "07:00","10:40","13:30","17:50","20:20"
+    };
 }
