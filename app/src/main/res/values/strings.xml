@@ -38,6 +38,37 @@
     <!-- Date String -->
     <string name="attach_tag">첨부파일 :</string>
 
+    <!-- Terminal -->
+    <string name="terminal_times">터미널 시간표</string>
+    <string name="seoul">서울</string>
+    <string name="gwangju">광주</string>
+    <string name="changwon">창원</string>
+    <string name="busan">부산</string>
+    <string name="westBusan">서부산</string>
+    <string name="ansan">안산</string>
+    <string name="jeonju">전주</string>
+    <string name="youngwolTaebak">영월/태백</string>
+    <string name="dongDaegu">동대구</string>
+    <string name="wonju">원주</string>
+    <string name="gjpohang">경주/포항</string>
+    <string name="incheonYeoju">인천/여주</string>
+    <string name="chungjuJeomchon">청주/점촌</string>
+    <string name="sokcho">속초</string>
+    <string name="gwangmyeong">광명</string>
+    <string name="gunsan">군산</string>
+    <string name="jinju">진주</string>
+    <string name="gimhae">김해</string>
+    <string name="gimpoAir">김포공항</string>
+    <string name="incheonAir">인천공항</string>
+    <string name="incheon">인천</string>
+    <string name="daejeon">대전</string>
+    <string name="cheonan">천안</string>
+    <string name="cheongju">청주</string>
+    <string name="sejongYuseong">세종/유성</string>
+    <string name="gumiUlsan">구미/울산</string>
+    <string name="gangneung">강릉</string>
+    <string name="goyang">고양</string>
+
     <!-- SubWay -->
     <string name="subway_text">현재 지하철의 위치를 검색할 수 있습니다.</string>
     <string name="subway_search">지하철 검색</string>

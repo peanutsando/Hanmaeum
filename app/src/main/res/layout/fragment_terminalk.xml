@@ -4,53 +4,20 @@
              android:layout_height="match_parent"
              tools:context="kr.ac.mju.hanmaeum.fragment.TerminalFragment">
 
-    <ScrollView
-        android:layout_margin="10dp"
+    <LinearLayout
+        android:layout_margin="7dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <GridView
+            android:id="@+id/terminalList"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            android:columnWidth="64dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:layout_margin="7dp"
-                android:id="@+id/terminal01"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_margin="7dp"
-                android:id="@+id/terminal02"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_margin="7dp"
-                android:id="@+id/terminal03"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_margin="7dp"
-                android:id="@+id/terminal04"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_margin="7dp"
-                android:id="@+id/terminal05"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_margin="7dp"
-                android:id="@+id/terminal06"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </FrameLayout>
