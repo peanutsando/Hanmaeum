@@ -41,6 +41,7 @@ import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.object.weather.Info;
+import kr.ac.mju.hanmaeum.utils.service.FCMService;
 import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
 import kr.ac.mju.hanmaeum.utils.service.WeatherService;
 import okhttp3.FormBody;
@@ -103,11 +104,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         //추가한 라인
         FirebaseMessaging.getInstance().subscribeToTopic("notice");
         FirebaseInstanceId.getInstance().getToken();
-/*
-        BackRunnable runnable = new BackRunnable();
-        Thread thread = new Thread(runnable);
-        thread.setDaemon(true);
-        thread.start();*/
+
+        // FCM 통신을 위한 서비스 생성
+        Intent serviceIntent = new Intent(MainActivity.this, FCMService.class);
+        startService(serviceIntent);
     }
 
     @Override
@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             }
             Log.d("NUMBER!!!!!!", number.get(number.size() - 1));
 
-            return number.get(number.size() - 1);
+            return "456";
         }
 
 
@@ -214,11 +214,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 editor.putString("number", number);
                 editor.commit();
 
-                sendNotification();
+             //   sendNotification();
             }
         }
 
-        private void sendNotification() {
+    /*    private void sendNotification() {
             RequestBody body = new FormBody.Builder()
                     .add("Message", "공지사항 알림 확인")
                     .build();
@@ -256,7 +256,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                     }
                 }
             });
-        }
+        }*/
     }
 
     PermissionListener permissionListener = new PermissionListener() {
