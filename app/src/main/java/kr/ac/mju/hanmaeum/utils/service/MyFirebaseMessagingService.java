@@ -2,6 +2,7 @@ package kr.ac.mju.hanmaeum.utils.service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.admin.SystemUpdatePolicy;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -12,6 +13,8 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import kr.ac.mju.hanmaeum.R;
@@ -24,6 +27,10 @@ import kr.ac.mju.hanmaeum.activity.MainActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FirebaseMsgService";
+    long now = System.currentTimeMillis();
+    Date date = new Date(now);
+    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    String formatdate = sdfNow.format(date);
 
     // [START receive_message]
     @Override
@@ -44,9 +51,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.app_icon)
-                .setContentTitle("FCM Push Test")
+                .setContentTitle("한마음")
                 .setContentText(messageBody)
                 .setAutoCancel(true)
+                .setShowWhen(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 

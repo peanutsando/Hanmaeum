@@ -29,6 +29,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +38,7 @@ import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
+import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.object.weather.Info;
 import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
@@ -60,7 +62,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
     private NoticeListAdapter noticeListAdapter = null;
 
-    private OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client;
 
     // Values for notice
     private GetNoticeTask getNoticeTask;
@@ -101,6 +103,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         //추가한 라인
         FirebaseMessaging.getInstance().subscribeToTopic("notice");
         FirebaseInstanceId.getInstance().getToken();
+/*
+        BackRunnable runnable = new BackRunnable();
+        Thread thread = new Thread(runnable);
+        thread.setDaemon(true);
+        thread.start();*/
     }
 
     @Override
@@ -199,6 +206,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             callValue = mPref.getString("number", "-1");
             // if notice number does exist and differ from the parameter number, change notice number to parameter number.
             if (!callValue.toString().equals(number.toString())) {
+                Log.d("TEST@@@@@@@@@@@@@", callValue.toString() + " " + number.toString());
                 SharedPreferences.Editor editor = mPref.edit();
                 editor.remove("number");
                 editor.commit();
@@ -206,23 +214,25 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 editor.putString("number", number);
                 editor.commit();
 
-                // Call function.
                 sendNotification();
             }
         }
 
-        /*
-         * This function requests for PHP server to PUSH Notification to clients.
-         */
         private void sendNotification() {
             RequestBody body = new FormBody.Builder()
-                    .add("Message", "Check your Notice")
+                    .add("Message", "공지사항 알림 확인")
                     .build();
 
             //request
             Request request = new Request.Builder()
-                    .url("http://192.168.123.100/FCM/push_notification.php")
+                    .url("http://183.101.80.77:880/FCM/push_notification.php")
                     .post(body)
+                    .build();
+
+            client = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
                     .build();
 
             okhttp3.Call call = client.newCall(request);

@@ -1,10 +1,12 @@
 package kr.ac.mju.hanmaeum.fragment;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +20,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +35,13 @@ import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.PreferenceManager;
 import kr.ac.mju.hanmaeum.utils.object.shuttle.Shuttle;
 import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
+import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
 import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
 import kr.ac.mju.hanmaeum.utils.service.database.DatabaseHelper;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class ShuttleFragment extends Fragment {
 
@@ -41,6 +51,7 @@ public class ShuttleFragment extends Fragment {
     ListView shuttleTime;
     private boolean checkSum = false;
 
+    private OkHttpClient client = new OkHttpClient();
     public RadioButton rb1;
     public RadioButton rb2;
     public RadioButton rb3;
@@ -67,6 +78,22 @@ public class ShuttleFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        BackRunnable runnable = new BackRunnable();
+        Thread thread = new Thread(runnable);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -84,12 +111,12 @@ public class ShuttleFragment extends Fragment {
         GetShuttleTime getShuttleTime = new GetShuttleTime();
         getShuttleTime.execute();
 
-
         rb1.setOnClickListener(optionClickListener);
         rb2.setOnClickListener(optionClickListener);
         rb3.setOnClickListener(optionClickListener);
 
         rb1.setChecked(true);
+
 
         return view;
     }
@@ -125,7 +152,6 @@ public class ShuttleFragment extends Fragment {
             }
             return null;
         }
-
 
         @Override
         protected void onPreExecute() {
@@ -285,4 +311,60 @@ public class ShuttleFragment extends Fragment {
             PreferenceManager.setShuttleDatabase(getActivity());
         }
     }
+
+    class BackRunnable implements Runnable {
+        public void run() {
+            while(true) {
+                if(ShuttleService.getShuttleServiceCheckList(getActivity())) {
+                    sendNotification();
+                }
+                try {
+                    Thread.sleep(60000);
+                }catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private void sendNotification() {
+            RequestBody body = new FormBody.Builder()
+                    .add("Message", "버스 도착 5분 전")
+                    .build();
+
+            //request
+            Request request = new Request.Builder()
+                    .url("http://183.101.80.77:880/FCM/push_notification.php")
+                    .post(body)
+                    .build();
+
+            client = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .build();
+
+            okhttp3.Call call = client.newCall(request);
+            call.enqueue(new okhttp3.Callback() {
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    Log.e("ONFAILURE@@@@@@@", "Registration error: " + e.getMessage());
+                }
+
+                @Override
+                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                    try {
+                        String resp = response.body().string();
+                        Log.v("ONSREPONSE!!!!", resp);
+                        if (response.isSuccessful()) {
+                        } else {
+
+                        }
+                    } catch (IOException e) {
+                        // Log.e(TAG_REGISTER, "Exception caught: ", e);
+                    }
+                }
+            });
+        }
+    }
 }
+
