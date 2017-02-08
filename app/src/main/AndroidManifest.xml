@@ -44,10 +44,6 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/GOOGLE_API_KEY" />
 
-        <service
-            android:name=".utils.service.FCMService"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 </manifest>

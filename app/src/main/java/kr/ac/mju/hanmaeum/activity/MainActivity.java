@@ -3,7 +3,6 @@ package kr.ac.mju.hanmaeum.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,11 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.gun0912.tedpermission.PermissionListener;
@@ -28,29 +23,18 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
-import kr.ac.mju.hanmaeum.activity.notice.NoticeItem;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
-import kr.ac.mju.hanmaeum.fragment.ShuttleFragment;
 import kr.ac.mju.hanmaeum.utils.Constants;
-import kr.ac.mju.hanmaeum.utils.object.weather.Info;
-import kr.ac.mju.hanmaeum.utils.service.FCMService;
-import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
-import kr.ac.mju.hanmaeum.utils.service.WeatherService;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Modified by Jinhyeon Park on 2017-02-02.
@@ -73,6 +57,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private ArrayList<String> urlList;
     private int index = 0;
 
+    // for checking number
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +89,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         //추가한 라인
         FirebaseMessaging.getInstance().subscribeToTopic("notice");
         FirebaseInstanceId.getInstance().getToken();
-
-        // FCM 통신을 위한 서비스 생성
-        Intent serviceIntent = new Intent(MainActivity.this, FCMService.class);
-        startService(serviceIntent);
     }
 
     @Override
@@ -183,7 +164,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             }
             Log.d("NUMBER!!!!!!", number.get(number.size() - 1));
 
-            return "456";
+            return number.get(number.size() - 1);
         }
 
 
@@ -192,72 +173,122 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             super.onPostExecute(number);
             noticeListAdapter.notifyDataSetChanged();
 
-            // Save notice number
-            SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String callValue = mPref.getString("number", "-1");
+            NotificationThread notificationThread = new NotificationThread();
+            notificationThread.start();
+        }
+    }
 
-            // if notice number does not exist, Save new number.
-            if (callValue.toString().equals("-1")) {
-                SharedPreferences.Editor editor = mPref.edit();
-                editor.putString("number", number);
-                editor.commit();
-            }
+    public class NotificationThread extends  Thread {
+        boolean isRun = true;
+        ArrayList<String> checkNumber;
 
-            callValue = mPref.getString("number", "-1");
-            // if notice number does exist and differ from the parameter number, change notice number to parameter number.
-            if (!callValue.toString().equals(number.toString())) {
-                Log.d("TEST@@@@@@@@@@@@@", callValue.toString() + " " + number.toString());
-                SharedPreferences.Editor editor = mPref.edit();
-                editor.remove("number");
-                editor.commit();
+        public void run() {
+            try {
+                while(isRun) {
+                    Document doc = Jsoup.connect(Constants.NOTICE_URL).get();
+                    int index=0;
 
-                editor.putString("number", number);
-                editor.commit();
+                    checkNumber = new ArrayList<String>();
+                    Elements numberElement = doc.select(Constants.NUMBER_ELEMENT);
 
-             //   sendNotification();
+                    for (Element e : numberElement) {
+                        checkNumber.add(String.valueOf(e.text()));
+                    }
+
+                    // How many do we delete notices? (they don't have a number)
+                    for (int i = 0; i < checkNumber.size(); i++) {
+                        if (!checkNumber.get(i).matches("^[0-9]+$")) {
+                            index++;
+                        }
+                    }
+
+                    // remove them. So We can get notices with number
+                    for (int i = 0; i < index; i++) {
+                        checkNumber.remove(0);
+                    }
+
+                    //checkNumber.get(checkNumber.size() - 1);
+                    String notiNumber = checkNumber.get(checkNumber.size() - 1);
+
+                    // Save notice number
+                    SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String callValue = mPref.getString("number", "-1");
+
+                    // if notice number does not exist, Save new number.
+                    if (callValue.toString().equals("-1")) {
+                        SharedPreferences.Editor editor = mPref.edit();
+                        editor.putString("number", notiNumber);
+                        editor.commit();
+
+                        Log.d("TEST##########", callValue.toString());
+                    }
+
+                    callValue = mPref.getString("number", "-1");
+                    Log.d("callValue@@@", callValue.toString());
+                    Log.d("number@@@@", notiNumber.toString());
+
+                    // if notice number does exist and differ from the parameter number, change notice number to parameter number.
+                    if (!callValue.toString().equals(notiNumber.toString())) {
+                        Log.d("TEST@@@@@@@@@@@@@", callValue.toString() + " " + notiNumber.toString());
+                        SharedPreferences.Editor editor = mPref.edit();
+                        editor.remove("number");
+                        editor.commit();
+
+                        editor.putString("number", notiNumber);
+                        editor.commit();
+
+                        sendNotification();
+                    }
+                    try {
+                        Thread.sleep(60000);
+                    } catch (Exception e) {}
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-
-    /*    private void sendNotification() {
-            RequestBody body = new FormBody.Builder()
-                    .add("Message", "공지사항 알림 확인")
-                    .build();
-
-            //request
-            Request request = new Request.Builder()
-                    .url("http://183.101.80.77:880/FCM/push_notification.php")
-                    .post(body)
-                    .build();
-
-            client = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(20, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .build();
-
-            okhttp3.Call call = client.newCall(request);
-            call.enqueue(new okhttp3.Callback() {
-                @Override
-                public void onFailure(okhttp3.Call call, IOException e) {
-                    Log.e("ONFAILURE@@@@@@@", "Registration error: " + e.getMessage());
-                }
-
-                @Override
-                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                    try {
-                        String resp = response.body().string();
-                        Log.v("ONSREPONSE!!!!", resp);
-                        if (response.isSuccessful()) {
-                        } else {
-
-                        }
-                    } catch (IOException e) {
-                        // Log.e(TAG_REGISTER, "Exception caught: ", e);
-                    }
-                }
-            });
-        }*/
     }
+
+    private void sendNotification() {
+        RequestBody body = new FormBody.Builder()
+                .add("Message", "공지사항을 확인하세요")
+                .build();
+
+        //request
+        Request request = new Request.Builder()
+                .url("http://183.101.80.77:880/FCM/push_notification.php")
+                .post(body)
+                .build();
+
+        client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        okhttp3.Call call = client.newCall(request);
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.e("ONFAILURE@@@@@@@", "Registration error: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                try {
+                    String resp = response.body().string();
+                    Log.v("ONSREPONSE!!!!", resp);
+                    if (response.isSuccessful()) {
+                    } else {
+
+                    }
+                } catch (IOException e) {
+                    // Log.e(TAG_REGISTER, "Exception caught: ", e);
+                }
+            }
+        });
+    }
+
 
     PermissionListener permissionListener = new PermissionListener() {
         @Override public void onPermissionGranted() {
