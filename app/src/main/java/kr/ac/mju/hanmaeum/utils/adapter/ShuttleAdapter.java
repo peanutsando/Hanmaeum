@@ -1,5 +1,7 @@
 package kr.ac.mju.hanmaeum.utils.adapter;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +30,12 @@ public class ShuttleAdapter extends BaseAdapter {
     private ArrayList<Shuttle> bookmark;
     private Context context;
     private BookmarkDatabase database;
-    private boolean checkSum;
 
     // 어떤페이지에서 가져왔는지, 어떤 자료를 가져왔는지
-    public ShuttleAdapter(Context context, ArrayList<Shuttle> shuttles, ArrayList<Shuttle> bookmark, boolean checkSum) {
+    public ShuttleAdapter(Context context, ArrayList<Shuttle> shuttles, ArrayList<Shuttle> bookmark) {
         this.shuttles = shuttles;
         this.context = context;
         this.bookmark = bookmark;
-        this.checkSum = checkSum;
 
         database = new BookmarkDatabase();
     }
@@ -76,12 +76,7 @@ public class ShuttleAdapter extends BaseAdapter {
         final Shuttle shuttle = shuttles.get(i);
         final Shuttle book = bookmark.get(i);
 
-        if (checkSum) {
-            String number = String.valueOf(Integer.parseInt(shuttle.getNo()) - Constants.VACATION_KEY);
-            holder.shuttle_number.setText(number);
-        } else {
-            holder.shuttle_number.setText(shuttle.getNo());
-        }
+        holder.shuttle_number.setText(shuttle.getNo());
         holder.shuttle_type.setText(shuttle.getType());
         holder.shuttle_start_time.setText(shuttle.getStart_time());
         holder.shuttle_ramp_time.setText(shuttle.getRamp_time());
@@ -103,6 +98,7 @@ public class ShuttleAdapter extends BaseAdapter {
                     database.setBookmarkCheck(context, shuttle.getNo(), true);
                     holder.bookmark.setImageResource(R.drawable.ic_filled_favorite);
                 }
+//                refresh();
             }
         });
 
@@ -125,4 +121,10 @@ public class ShuttleAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
+
+    /*private void refresh() {
+        FragmentTransaction transaction = fragment.getFragmentManager().beginTransaction();
+
+        transaction.detach(fragment).attach(fragment).commit();
+    }*/
 }

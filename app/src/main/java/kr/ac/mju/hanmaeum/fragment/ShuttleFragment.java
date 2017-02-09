@@ -6,42 +6,38 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.PreferenceManager;
 import kr.ac.mju.hanmaeum.utils.object.shuttle.Shuttle;
 import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
-import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
 import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
 import kr.ac.mju.hanmaeum.utils.service.database.DatabaseHelper;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class ShuttleFragment extends Fragment {
 
@@ -49,20 +45,8 @@ public class ShuttleFragment extends Fragment {
     private ArrayList<Shuttle> bookmark;
     @BindView(R.id.shuttleTime)
     ListView shuttleTime;
-    private boolean checkSum = false;
 
-    private OkHttpClient client = new OkHttpClient();
-    public RadioButton rb1;
-    public RadioButton rb2;
-    public RadioButton rb3;
-
-    //현재시간 가져오는 부분
-    long now = System.currentTimeMillis();
-    Time time = new Time(now);
-
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-    String nowTime = simpleDateFormat.format(time);
-
+    private ShuttleAdapter shuttleAdapter;
 
     public ShuttleFragment() {
         // Required empty public constructor
@@ -96,21 +80,10 @@ public class ShuttleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_shuttle, container, false);
         ButterKnife.bind(this, view);
 
-        rb1 = (RadioButton) view.findViewById(R.id.shuttle_rb1);
-        rb2 = (RadioButton) view.findViewById(R.id.shuttle_rb2);
-        rb3 = (RadioButton) view.findViewById(R.id.shuttle_rb3);
-
         shuttleList = new ArrayList<>();
         bookmark = new ArrayList<>();
         GetShuttleTime getShuttleTime = new GetShuttleTime();
         getShuttleTime.execute();
-
-        rb1.setOnClickListener(optionClickListener);
-        rb2.setOnClickListener(optionClickListener);
-        rb3.setOnClickListener(optionClickListener);
-
-        rb1.setChecked(true);
-
 
         return view;
     }
@@ -155,105 +128,18 @@ public class ShuttleFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Shuttle> shuttles) {
             setDatabase();
-            setShuttleTime();
+            setAdapter();
             super.onPostExecute(shuttleList);
         }
     }
 
-    RadioButton.OnClickListener optionClickListener = new RadioButton.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ArrayList<Shuttle> checkShuttleList = new ArrayList<>();
-            String[] _nowTime = nowTime.split(":");
-            boolean flag = false;
-
-            if (v.getId() == R.id.shuttle_rb1) {
-                setShuttleTime();
-            } else if (v.getId() == R.id.shuttle_rb2) {
-                for (int i = 0; i < 65; i++) {
-                    if (flag) break;
-                    String[] _startTime = shuttleList.get(i).getStart_time().split(":");
-                    if (Integer.parseInt(_nowTime[0]) < Integer.parseInt(_startTime[0])) {
-                        for (int j = i; j < 65; j++) {
-                            checkShuttleList.add(shuttleList.get(j));
-                        }
-                        flag = true;
-                    } else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
-                        if (Integer.parseInt(_nowTime[1]) <= Integer.parseInt(_startTime[1])) {
-                            for (int j = i; j < 65; j++) {
-                                checkShuttleList.add(shuttleList.get(j));
-                            }
-                            flag = true;
-                        }
-                    }
-                }
-
-                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark, checkSum);
-                shuttleTime.setAdapter(shuttleAdapter);
-
-            } else if (v.getId() == R.id.shuttle_rb3) {
-                for (int i = 75; i < 85; i++) {
-                    if (flag) break;
-                    String[] _startTime = shuttleList.get(i).getStart_time().split(":");
-                    if (Integer.parseInt(_nowTime[0]) < Integer.parseInt(_startTime[0])) {
-                        for (int j = i; j < 85; j++) {
-                            checkShuttleList.add(shuttleList.get(j));
-                        }
-                        checkSum = true;
-                        flag = true;
-                    } else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
-                        if (Integer.parseInt(_nowTime[1]) <= Integer.parseInt(_startTime[1])) {
-                            for (int j = i; j < 85; j++) {
-                                checkShuttleList.add(shuttleList.get(j));
-                            }
-                            checkSum = true;
-                            flag = true;
-                        }
-                    }
-                }
-
-                ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, setBookmark(bookmark), checkSum);
-                shuttleTime.setAdapter(shuttleAdapter);
-            }
-        }
-    };
-
-    private ArrayList<Shuttle> setBookmark(ArrayList<Shuttle> book) {
-        ArrayList<Shuttle> books = new ArrayList<>();
-        for (Shuttle s : book) {
-            if (Integer.parseInt(s.getNo()) > 75) {
-                books.add(s);
-            }
-        }
-        return books;
-    }
-
-    private void setShuttleTime() {
-        ArrayList<Shuttle> checkShuttleList = new ArrayList<>();
-        String[] _nowTime = nowTime.split(":");
-        boolean flag = false;
-        for (int i = 0; i < 75; i++) {
-            if (flag) break;
-            String[] _startTime = shuttleList.get(i).getStart_time().split(":");
-            if (Integer.parseInt(_nowTime[0]) < Integer.parseInt(_startTime[0])) {
-                for (int j = i; j < 75; j++) {
-                    checkShuttleList.add(shuttleList.get(j));
-                }
-                flag = true;
-            } else if (Integer.parseInt(_nowTime[0]) == Integer.parseInt(_startTime[0])) {
-                if (Integer.parseInt(_nowTime[1]) <= Integer.parseInt(_startTime[1])) {
-                    for (int j = i; j < 75; j++) {
-                        checkShuttleList.add(shuttleList.get(j));
-                    }
-                    flag = true;
-                }
-            }
-        }
+    private void setAdapter() {
         setBookmark();
-        ShuttleAdapter shuttleAdapter = new ShuttleAdapter(getActivity(), checkShuttleList, bookmark, checkSum);
+
+        shuttleAdapter = new ShuttleAdapter(shuttleList, bookmark);
         shuttleTime.setAdapter(shuttleAdapter);
 
-        shuttleAdapter.notifyDataSetChanged();
+        shuttleTime.deferNotifyDataSetChanged();
     }
 
 
@@ -304,6 +190,115 @@ public class ShuttleFragment extends Fragment {
 
             PreferenceManager.setShuttleDatabase(getActivity());
         }
+    }
+
+    public class ShuttleAdapter extends BaseAdapter {
+
+        private ArrayList<Shuttle> shuttles;
+        private ArrayList<Shuttle> bookmark;
+        private BookmarkDatabase database;
+
+        // 어떤페이지에서 가져왔는지, 어떤 자료를 가져왔는지
+        public ShuttleAdapter(ArrayList<Shuttle> shuttles, ArrayList<Shuttle> bookmark) {
+            this.shuttles = shuttles;
+            this.bookmark = bookmark;
+
+            database = new BookmarkDatabase();
+        }
+
+        // 리스트뷰(어레이리스트)의 갯수
+        @Override
+        public int getCount() {
+            return shuttles.size();
+        }
+
+        // 해당되는 오브젝트의 값
+        @Override
+        public Object getItem(int i) {
+            return shuttles.get(i);
+        }
+
+        // 해당되는 아이템의 번호
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(final int i, View view, ViewGroup viewGroup) {
+            final ViewHolder holder;
+
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                view = inflater.inflate(R.layout.shuttle_content, viewGroup, false);
+                holder = new ViewHolder(view);
+
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+
+            final Shuttle shuttle = shuttles.get(i);
+            final Shuttle book = bookmark.get(i);
+
+            holder.shuttle_number.setText(shuttle.getNo());
+            holder.shuttle_type.setText(shuttle.getType());
+            holder.shuttle_start_time.setText(shuttle.getStart_time());
+            holder.shuttle_ramp_time.setText(shuttle.getRamp_time());
+
+            if (book.isBookmark() && book.getNo().equals(shuttle.getNo())) {
+                holder.bookmark.setImageResource(R.drawable.ic_filled_favorite);
+            } else {
+                holder.bookmark.setImageResource(R.drawable.ic_empty_favorite);
+            }
+
+            holder.bookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // if existing data exists, there is a value in the Database
+                    if (book.isBookmark()) {
+                        database.setBookmarkCheck(getActivity(), shuttle.getNo(), false);
+                        holder.bookmark.setImageResource(R.drawable.ic_empty_favorite);
+                    } else {
+                        database.setBookmarkCheck(getActivity(), shuttle.getNo(), true);
+                        holder.bookmark.setImageResource(R.drawable.ic_filled_favorite);
+                    }
+                    refresh(shuttle.getStart_time(), shuttle.getType());
+                }
+            });
+
+            return view;
+        }
+
+        class ViewHolder {
+            @BindView(R.id.shuttle_number)
+            TextView shuttle_number;
+            @BindView(R.id.shuttle_type)
+            TextView shuttle_type;
+            @BindView(R.id.shuttle_start_time)
+            TextView shuttle_start_time;
+            @BindView(R.id.shuttle_ramp_time)
+            TextView shuttle_ramp_time;
+            @BindView(R.id.bookmark)
+            ImageView bookmark;
+
+            ViewHolder(View view) {
+                ButterKnife.bind(this, view);
+            }
+        }
+    }
+
+    private void refresh(String time, String type) {
+        String text = time + " " + type;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.detach(this).attach(this).commit();
+
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText(text)
+                .setContentText(getString(R.string.shuttle_bookmark))
+                .show();
     }
 }
 

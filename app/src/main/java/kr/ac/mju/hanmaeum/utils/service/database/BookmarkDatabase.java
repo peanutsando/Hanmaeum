@@ -36,51 +36,53 @@ public class BookmarkDatabase {
     }
 
     /**
-        * Bookmark Update Query
-                * If you clicked on the bookmark image, it is a syntax to proceed
-                *
-        * @param key  : bus index
-        * @param flag : bookmark check
-        */
-        public void setBookmarkCheck(Context context, String key, boolean flag) {
-            ContentValues values = new ContentValues();
-            if (openDatabase(context)) {
-                if (flag) {
-                    values.put(Constants.TABLE_COL_BOOKMARK, true);
-                } else {
-                    values.put(Constants.TABLE_COL_BOOKMARK, false);
-                }
-                database.update(Constants.BOOKMARK_TABLE, values, Constants.TABLE_COL_ID + " = ? ", new String[]{key});
+     * Bookmark Update Query
+     * If you clicked on the bookmark image, it is a syntax to proceed
+     *
+     * @param key  : bus index
+     * @param flag : bookmark check
+     */
+    public void setBookmarkCheck(Context context, String key, boolean flag) {
+        ContentValues values = new ContentValues();
+        if (openDatabase(context)) {
+            if (flag) {
+                values.put(Constants.TABLE_COL_BOOKMARK, true);
+            } else {
+                values.put(Constants.TABLE_COL_BOOKMARK, false);
             }
+            Log.i("DatabaseCheck", key + " " + values.toString() + " " + flag);
+            database.update(Constants.BOOKMARK_TABLE, values, Constants.TABLE_COL_ID + " = ? ", new String[]{key});
         }
+    }
 
-        /**
-         * Bookmark Select Query
-         * If bookmark is true, it is a syntax to proceed
-         */
-        public ArrayList<Shuttle> getBookmarkCheck(Context context) {
+    /**
+     * Bookmark Select Query
+     * If bookmark is true, it is a syntax to proceed
+     */
+    public ArrayList<Shuttle> getBookmarkCheck(Context context) {
         ArrayList<Shuttle> bookmarkCheck = new ArrayList<>();
 
-            try {
-                if (openDatabase(context)) {
-                    Cursor cursor = database.query(
-                            true, Constants.BOOKMARK_TABLE
-                            , databaseTableCol, null, null,
-                            null, null, null, null
-                    );
+        try {
+            if (openDatabase(context)) {
+                Cursor cursor = database.query(
+                        true, Constants.BOOKMARK_TABLE
+                        , databaseTableCol, null, null,
+                        null, null, null, null
+                );
 
-                    while (cursor.moveToNext()) {
-                        boolean value = cursor.getInt(cursor.getColumnIndex(databaseTableCol[2])) > 0;
-                        bookmarkCheck.add(new Shuttle(cursor.getString(cursor.getColumnIndex(databaseTableCol[0]))
-                                , value,
-                                cursor.getString(cursor.getColumnIndex(databaseTableCol[1]))));
-                    }
+                while (cursor.moveToNext()) {
+                    boolean value = cursor.getInt(cursor.getColumnIndex(databaseTableCol[2])) > 0;
+                    bookmarkCheck.add(new Shuttle(cursor.getString(cursor.getColumnIndex(databaseTableCol[0]))
+                            , value,
+                            cursor.getString(cursor.getColumnIndex(databaseTableCol[1]))));
 
-                    cursor.close();
                 }
-            }catch(Exception e) {
-                e.printStackTrace();
+
+                cursor.close();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return bookmarkCheck;
     }
