@@ -3,6 +3,7 @@ package kr.ac.mju.hanmaeum.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,6 +32,9 @@ import kr.ac.mju.hanmaeum.R;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeContent;
 import kr.ac.mju.hanmaeum.activity.notice.NoticeListAdapter;
 import kr.ac.mju.hanmaeum.utils.Constants;
+import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
+import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
+import kr.ac.mju.hanmaeum.utils.service.database.DatabaseHelper;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -89,6 +93,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         //추가한 라인
         FirebaseMessaging.getInstance().subscribeToTopic("notice");
         FirebaseInstanceId.getInstance().getToken();
+
+        BusAlarmThread busAlarmThread = new BusAlarmThread();
+        busAlarmThread.start();
     }
 
     @Override
@@ -178,59 +185,82 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         }
     }
 
-    public class NotificationThread extends  Thread {
+    public class BusAlarmThread extends  Thread {
         boolean isRun = true;
-        ArrayList<String> checkNumber;
 
+        @Override
         public void run() {
-            try {
-                while(isRun) {
-                    Document doc = Jsoup.connect(Constants.NOTICE_URL).get();
-                    int index=0;
+            while(isRun) {
+                if(ShuttleService.getShuttleServiceCheckList(getApplicationContext())) {
+                    Log.d("CALL#########", "check");
+                    sendBusAlarm();
 
-                    checkNumber = new ArrayList<String>();
-                    Elements numberElement = doc.select(Constants.NUMBER_ELEMENT);
+                    try {
+                        Thread.sleep(60000);
+                    } catch (Exception e) {}
+                }
 
-                    for (Element e : numberElement) {
-                        checkNumber.add(String.valueOf(e.text()));
-                    }
+                try {
+                    Thread.sleep(15000);
+                } catch (Exception e) {}
+            }
 
-                    // How many do we delete notices? (they don't have a number)
-                    for (int i = 0; i < checkNumber.size(); i++) {
-                        if (!checkNumber.get(i).matches("^[0-9]+$")) {
-                            index++;
-                        }
-                    }
+        }
+    }
 
-                    // remove them. So We can get notices with number
-                    for (int i = 0; i < index; i++) {
-                        checkNumber.remove(0);
-                    }
+    public class NotificationThread extends  Thread {
+                    boolean isRun = true;
+                    ArrayList<String> checkNumber;
 
-                    //checkNumber.get(checkNumber.size() - 1);
-                    String notiNumber = checkNumber.get(checkNumber.size() - 1);
+                    public void run() {
+                        try {
+                            while(isRun) {
+                                Document doc = Jsoup.connect(Constants.NOTICE_URL).get();
+                                int index=0;
 
-                    // Save notice number
-                    SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    String callValue = mPref.getString("number", "-1");
+                                checkNumber = new ArrayList<String>();
+                                Elements numberElement = doc.select(Constants.NUMBER_ELEMENT);
 
-                    // if notice number does not exist, Save new number.
-                    if (callValue.toString().equals("-1")) {
-                        SharedPreferences.Editor editor = mPref.edit();
-                        editor.putString("number", notiNumber);
-                        editor.commit();
+                                for (Element e : numberElement) {
+                                    checkNumber.add(String.valueOf(e.text()));
+                                }
 
-                        Log.d("TEST##########", callValue.toString());
-                    }
+                                // How many do we delete notices? (they don't have a number)
+                                for (int i = 0; i < checkNumber.size(); i++) {
+                                    if (!checkNumber.get(i).matches("^[0-9]+$")) {
+                                        index++;
+                                    }
+                                }
 
-                    callValue = mPref.getString("number", "-1");
-                    Log.d("callValue@@@", callValue.toString());
-                    Log.d("number@@@@", notiNumber.toString());
+                                // remove them. So We can get notices with number
+                                for (int i = 0; i < index; i++) {
+                                    checkNumber.remove(0);
+                                }
 
-                    // if notice number does exist and differ from the parameter number, change notice number to parameter number.
-                    if (!callValue.toString().equals(notiNumber.toString())) {
-                        Log.d("TEST@@@@@@@@@@@@@", callValue.toString() + " " + notiNumber.toString());
-                        SharedPreferences.Editor editor = mPref.edit();
+                                //checkNumber.get(checkNumber.size() - 1);
+                                String notiNumber = checkNumber.get(checkNumber.size() - 1);
+
+                                // Save notice number
+                                SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                String callValue = mPref.getString("number", "-1");
+
+                                // if notice number does not exist, Save new number.
+                                if (callValue.toString().equals("-1")) {
+                                    SharedPreferences.Editor editor = mPref.edit();
+                                    editor.putString("number", notiNumber);
+                                    editor.commit();
+
+                                    Log.d("TEST##########", callValue.toString());
+                                }
+
+                                callValue = mPref.getString("number", "-1");
+                                Log.d("callValue@@@", callValue.toString());
+                                Log.d("number@@@@", notiNumber.toString());
+
+                                // if notice number does exist and differ from the parameter number, change notice number to parameter number.
+                                if (!callValue.toString().equals(notiNumber.toString())) {
+                                    Log.d("TEST@@@@@@@@@@@@@", callValue.toString() + " " + notiNumber.toString());
+                                    SharedPreferences.Editor editor = mPref.edit();
                         editor.remove("number");
                         editor.commit();
 
@@ -251,7 +281,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
     private void sendNotification() {
         RequestBody body = new FormBody.Builder()
-                .add("Message", "공지사항을 확인하세요")
+                .add("Message", "공지사항 확인")
                 .build();
 
         //request
@@ -288,6 +318,47 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             }
         });
     }
+
+    private void sendBusAlarm() {
+        RequestBody body = new FormBody.Builder()
+                .add("Message", "버스 출발 5분 전")
+                .build();
+
+        //request
+        Request request = new Request.Builder()
+                .url("http://183.101.80.77:880/FCM/push_notification.php")
+                .post(body)
+                .build();
+
+        client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        okhttp3.Call call = client.newCall(request);
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.e("ONFAILURE@@@@@@@", "Registration error: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                try {
+                    String resp = response.body().string();
+                    Log.v("ONSREPONSE!!!!", resp);
+                    if (response.isSuccessful()) {
+                    } else {
+
+                    }
+                } catch (IOException e) {
+                    // Log.e(TAG_REGISTER, "Exception caught: ", e);
+                }
+            }
+        });
+    }
+
 
 
     PermissionListener permissionListener = new PermissionListener() {

@@ -27,15 +27,20 @@ public class ShuttleService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         String nowTime = simpleDateFormat.format(time);
 
-        Log.i("Now Time is", nowTime);
         String[] setTime = nowTime.split(":");
 
         for (Shuttle s : shuttles) {
             String databaseTime = s.getStart_time();
             String[] getDbTime = databaseTime.split(":");
             if (s.isBookmark()) {
+                Log.d("NOW TIME : ", setTime[0]+"/"+setTime[1]);
+                Log.d("BUS TIME : ", getDbTime[0]+"/"+getDbTime[1]);
+
                 if (setTimeCaclulator(setInteger(setTime[0]), setInteger(setTime[1]))
-                        == setTimeCaclulator(setInteger(getDbTime[0]), setInteger(getDbTime[1])) + 5) {
+                        == setTimeCaclulator(setInteger(getDbTime[0]), setInteger(getDbTime[1])) -5) {
+                    Log.d("TRUE NOW TIME : ", setTime[0]+"/"+setTime[1]);
+                    Log.d("TRUE BUS TIME : ", getDbTime[0]+"/"+getDbTime[1]);
+                    Log.d("TRUE$$$$", "RETURN TRUE");
                     return true;
                 }
             }
@@ -43,7 +48,6 @@ public class ShuttleService {
 
         return false;
     }
-
     private static int setInteger(String x) {
         return Integer.parseInt(x);
     }

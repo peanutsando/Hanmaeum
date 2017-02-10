@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -23,9 +25,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,18 +39,28 @@ import kr.ac.mju.hanmaeum.utils.Constants;
 import kr.ac.mju.hanmaeum.utils.PreferenceManager;
 import kr.ac.mju.hanmaeum.utils.object.shuttle.Shuttle;
 import kr.ac.mju.hanmaeum.utils.adapter.ShuttleAdapter;
+import kr.ac.mju.hanmaeum.utils.service.ShuttleService;
 import kr.ac.mju.hanmaeum.utils.service.database.BookmarkDatabase;
 import kr.ac.mju.hanmaeum.utils.service.database.DatabaseHelper;
 import okhttp3.OkHttpClient;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
 
 public class ShuttleFragment extends Fragment {
-
+    private OkHttpClient client;
     private ArrayList<Shuttle> shuttleList;
     private ArrayList<Shuttle> bookmark;
     @BindView(R.id.shuttleTime)
     ListView shuttleTime;
 
+    private Context context;
+    private boolean flag = false;
+
     private ShuttleAdapter shuttleAdapter;
+
 
     public ShuttleFragment() {
         // Required empty public constructor
@@ -57,6 +71,12 @@ public class ShuttleFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        context = getActivity();
     }
 
     @Override
@@ -72,6 +92,22 @@ public class ShuttleFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        /*Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(ShuttleService.getShuttleServiceCheckList(context)) {
+                    Log.d("CALL#########", "check");
+                    sendNotification();
+                }
+            }
+        }, 20000);*/
     }
 
     @Override
@@ -301,4 +337,3 @@ public class ShuttleFragment extends Fragment {
                 .show();
     }
 }
-
